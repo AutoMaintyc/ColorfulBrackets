@@ -9,7 +9,7 @@ import java.util.*
 
 import com.intellij.openapi.editor.markup.*
 import java.awt.Color
-import java.util.*
+import kotlin.random.Random
 
 object BracketFinder {
     fun findBrackets(project: Project, file: PsiFile, editor: Editor) {
@@ -43,17 +43,18 @@ object BracketFinder {
 
             pairs.forEach { (open, close) ->
                 val markupModel = editor.markupModel
-                highlightBracket(markupModel, open)
-                highlightBracket(markupModel, close)
+                val color = getRandomColor()
+                highlightBracket(markupModel, open, color)
+                highlightBracket(markupModel, close, color)
                 println("Found bracket pair: (${open.textRange}, ${close.textRange})")
             }
         }
     }
 
-    private fun highlightBracket(markupModel: MarkupModel, element: PsiElement) {
+    private fun highlightBracket(markupModel: MarkupModel, element: PsiElement,color: Color) {
         val textAttributes = TextAttributes()
         
-        textAttributes.foregroundColor = Color.RED // 设置括号颜色为红色
+        textAttributes.foregroundColor = color // 设置括号颜色
         val highlighter: RangeHighlighter = markupModel.addRangeHighlighter(
             element.textRange.startOffset,
             element.textRange.endOffset,
@@ -61,5 +62,12 @@ object BracketFinder {
             textAttributes,
             HighlighterTargetArea.EXACT_RANGE
         )
+    }
+
+    private fun getRandomColor(): Color {
+        val red = Random.nextInt(256)
+        val green = Random.nextInt(256)
+        val blue = Random.nextInt(256)
+        return Color(red, green, blue)
     }
 }
