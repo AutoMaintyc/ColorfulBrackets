@@ -12,6 +12,6 @@ class FindBracketsAction : AnAction() {
         val document = editor.document
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
 
-        BracketFinder.findBrackets(project, psiFile, editor)
+        BracketFinder.findBrackets(psiFile, editor)
     }
 }
