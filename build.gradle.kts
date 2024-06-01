@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.intellij") version "1.17.3"
 }
 
-group = "com.automain"
+group = "com.AutoMain"
 version = "1.0-SNAPSHOT"
 
 repositories {

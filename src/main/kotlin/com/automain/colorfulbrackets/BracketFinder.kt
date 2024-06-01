@@ -1,13 +1,18 @@
 ﻿package com.automain.colorfulbrackets
 
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import java.util.*
 
+import com.intellij.openapi.editor.markup.*
+import java.awt.Color
+import java.util.*
+
 object BracketFinder {
-    fun findBrackets(project: Project, file: PsiFile) {
+    fun findBrackets(project: Project, file: PsiFile, editor: Editor) {
         if (file is PsiFile) {
             val stack = Stack<PsiElement>()
             val pairs = mutableListOf<Pair<PsiElement, PsiElement>>()
@@ -37,8 +42,24 @@ object BracketFinder {
             }
 
             pairs.forEach { (open, close) ->
+                val markupModel = editor.markupModel
+                highlightBracket(markupModel, open)
+                highlightBracket(markupModel, close)
                 println("Found bracket pair: (${open.textRange}, ${close.textRange})")
             }
         }
+    }
+
+    private fun highlightBracket(markupModel: MarkupModel, element: PsiElement) {
+        val textAttributes = TextAttributes()
+        
+        textAttributes.foregroundColor = Color.RED // 设置括号颜色为红色
+        val highlighter: RangeHighlighter = markupModel.addRangeHighlighter(
+            element.textRange.startOffset,
+            element.textRange.endOffset,
+            HighlighterLayer.ADDITIONAL_SYNTAX,
+            textAttributes,
+            HighlighterTargetArea.EXACT_RANGE
+        )
     }
 }
