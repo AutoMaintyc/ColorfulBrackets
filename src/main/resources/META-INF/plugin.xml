@@ -19,9 +19,23 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
+    import com.intellij.openapi.editor.Document
+    import com.intellij.openapi.project.Project
+    import com.intellij.psi.PsiDocumentManagerListener
+
+    <application-components>
+        <component>
+            <implementation-class>com.automain.colorfulbrackets.PluginPsiDocumentTransactionListener</implementation-class>
+        </component>
+    </application-components>
+
+
+
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-    <extensions defaultExtensionNs="com.intellij"></extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
+    </extensions>
 
     <actions>
         <action id="com.AutoMain.ColorfulBrackets.actions.FindBracketsAction"
