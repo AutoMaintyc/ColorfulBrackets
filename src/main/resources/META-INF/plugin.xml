@@ -13,8 +13,22 @@
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description><![CDATA[Default-Default-Default-Default-Default.<br><em>default</em>]]></description>
-
+    <description><![CDATA[
+    Change the color of '{' and '}' in the code.
+    <br><a href="https://github.com/AutoMaintyc/ColorfulBrackets">SourceCode</a>
+    <br>Note: The project is still in development. If you have any ideas or find bugs, please provide feedback on <a href="https://github.com/AutoMaintyc/ColorfulBrackets/issues">GitHub</a>
+    <br>
+    <br>修改代码中“{”、“}”的颜色。
+    <br><a href="https://github.com/AutoMaintyc/ColorfulBrackets">源代码</a>
+    <br>注：当前仍处于开发阶段，有创意点或bug请在<a href="https://github.com/AutoMaintyc/ColorfulBrackets/issues">GitHub</a>上反馈
+    <br>
+    <br><a href="https://github.com/AutoMaintyc"><em>Made by AutoMain</em></a>
+    ]]></description>
+    
+    <change-notes><![CDATA[
+        Unstable version.
+    ]]></change-notes>
+    
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
@@ -22,13 +36,6 @@
     import com.intellij.openapi.editor.Document
     import com.intellij.openapi.project.Project
     import com.intellij.psi.PsiDocumentManagerListener
-
-    <application-components>
-        <component>
-            <implementation-class>com.automain.colorfulbrackets.PluginPsiDocumentTransactionListener</implementation-class>
-        </component>
-    </application-components>
-
 
 
     <!-- Extension points defined by the plugin.
