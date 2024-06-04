@@ -25,7 +25,8 @@ object BracketFinder {
         file.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 super.visitElement(element)
-                if (isInStringOrComment(element)) {
+                if (element is PsiLiteralValue) {
+                    // 如果是字面量
                     return
                 }
                 when (element.text) {
@@ -115,11 +116,12 @@ object BracketFinder {
 //        return PsiTreeUtil.getParentOfType(element, PsiComment::class.java, true) != null ||
 //                PsiTreeUtil.getParentOfType(element, PsiWhiteSpace::class.java, true) != null
 //    }
-    //返回false的时候就不继续了
+    //返回false的时候就  加入
+    //true，不会继续的,不加入颜色修改列表
     fun isInStringOrComment(element: PsiElement): Boolean {
         // 检查 element 是否在注释中
         if (PsiTreeUtil.getParentOfType(element, PsiComment::class.java) != null) return true
-
+        if (element is PsiLiteralValue && element.value is String) return true
         // 检查 element 是否在字符串字面量或模板中
         val parent = PsiTreeUtil.getParentOfType(element, PsiLiteralValue::class.java)
         if (parent != null) {
@@ -135,12 +137,16 @@ object BracketFinder {
                     val end = textRange.endOffset - parentRange.startOffset - 1
                     if (text.substring(start, end).contains("\${") || text.substring(start, end).contains("}")) {
                         println("check {} in $ successful")
-                        return false
+                        return true
                     }
                 }
-                return false
-            }else{
+                //是字符串，返回true,
                 return true
+            }
+            else
+            {
+                //不是字符串，返回false
+                return false
             }
         }
 
