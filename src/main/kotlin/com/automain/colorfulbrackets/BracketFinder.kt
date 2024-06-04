@@ -4,7 +4,6 @@ import com.intellij.openapi.editor.Editor
 import java.util.*
 import com.intellij.openapi.editor.markup.*
 import com.intellij.psi.*
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.JBColor
@@ -13,40 +12,37 @@ import java.awt.Color
 import kotlin.random.Random
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiComment
+import com.intellij.psi.impl.source.tree.LeafPsiElement
 
 object BracketFinder {
 
     fun findBrackets(file: PsiFile, editor: Editor) {
 
         val stack = Stack<PsiElement>()
+        stack.clear()
         val pairs = mutableListOf<Pair<PsiElement, PsiElement>>()
+        pairs.clear()
         val unmatchedOpenings = mutableListOf<PsiElement>()
+        unmatchedOpenings.clear()
         val unmatchedClosings = mutableListOf<PsiElement>()
+        unmatchedClosings.clear()
         file.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
-
-                //子节点非空
-                if(element.children.isNotEmpty()){
-                    return
-                }
                 //跳过注释||是否处于注释中
-                if (element is PsiComment || element.parent is PsiComment){
-                    return
-                }
-                //字面量||是否处于字面量中
-                if (element is PsiLiteralValue || element.parent is PsiLiteralValue|| element.parent.parent is PsiLiteralValue) {
-                    return
-                }
-                if (PsiTreeUtil.findChildOfType(element, PsiElement::class.java) != null)
+                if (element is PsiComment || element.parent is PsiComment)
                 {
                     return
                 }
-                if (PsiTreeUtil.findChildOfType(element, PsiLiteralValue::class.java) != null){
+                //字面量||是否处于字面量中
+                if (element is PsiLiteralValue || element.parent is PsiLiteralValue|| element.parent.parent is PsiLiteralValue) 
+                {
                     return
                 }
+                
+                if (needRet(element)) return
 
                 super.visitElement(element)
-                when (element.text) {
+                 when (element.text) {
                     "{" -> {
                         stack.push(element)
                     }
@@ -100,7 +96,6 @@ object BracketFinder {
                 document
             ) // You can choose a specific color for unmatched brackets
         }
-
     }
 
     private fun highlightBracket(markupModel: MarkupModel, element: PsiElement, color: Color, document: Document) {
@@ -123,5 +118,13 @@ object BracketFinder {
         val green = Random.nextInt(256)
         val blue = Random.nextInt(256)
         return JBColor(Color(red, green, blue), Color(red, green, blue))
+    }
+    
+    private fun needRet(element: PsiElement): Boolean{
+        return (element::class.simpleName == "KtStringTemplateExpression"
+                ||element::class.simpleName == "KtLiteralStringTemplateEntry"
+                ||element::class.simpleName == "KtBlockStringTemplateEntry"
+                ||((element is LeafPsiElement) && element.elementType::class.simpleName == "KtToken")
+                )
     }
 }

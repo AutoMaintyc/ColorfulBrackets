@@ -1,14 +1,8 @@
 ﻿package com.automain.colorfulbrackets
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
-import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.psi.PsiDocumentManager
-import com.intellij.psi.PsiManager
-import com.intellij.psi.PsiTreeChangeListener
 
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {

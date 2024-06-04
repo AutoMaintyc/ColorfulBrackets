@@ -1,12 +1,9 @@
 ﻿package com.automain.colorfulbrackets
 
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeEvent
@@ -16,22 +13,27 @@ import com.intellij.psi.PsiTreeChangeListener
 @Service(Service.Level.PROJECT)
 class PluginPsiTreeChangeListener(private val project: Project) : PsiTreeChangeListener {
     override fun beforeChildAddition(event: PsiTreeChangeEvent) {
-
         val psiFile = event.file as PsiFile
         val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
         BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun beforeChildRemoval(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun beforeChildReplacement(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun beforeChildMovement(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun beforeChildrenChange(event: PsiTreeChangeEvent) {
@@ -41,34 +43,49 @@ class PluginPsiTreeChangeListener(private val project: Project) : PsiTreeChangeL
     }
 
     override fun beforePropertyChange(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childAdded(event: PsiTreeChangeEvent) {
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childRemoved(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childReplaced(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childrenChanged(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childMoved(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun propertyChanged(event: PsiTreeChangeEvent) {
-        TODO("Not yet implemented")
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     fun register() {
-        PsiManager.getInstance(project).addPsiTreeChangeListener(this, Disposable { project })
+        PsiManager.getInstance(project).addPsiTreeChangeListener(this) { project }
     }
 }
 

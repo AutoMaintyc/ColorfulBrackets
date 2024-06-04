@@ -10,7 +10,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.TextEditor
-import com.intellij.psi.PsiManager
 
 //文件打开，选择的文件变化
 @Service(Service.Level.PROJECT)
