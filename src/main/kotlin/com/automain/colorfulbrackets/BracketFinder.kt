@@ -115,6 +115,7 @@ object BracketFinder {
 //        return PsiTreeUtil.getParentOfType(element, PsiComment::class.java, true) != null ||
 //                PsiTreeUtil.getParentOfType(element, PsiWhiteSpace::class.java, true) != null
 //    }
+    //返回false的时候就不继续了
     fun isInStringOrComment(element: PsiElement): Boolean {
         // 检查 element 是否在注释中
         if (PsiTreeUtil.getParentOfType(element, PsiComment::class.java) != null) return true
@@ -136,8 +137,10 @@ object BracketFinder {
                         println("check {} in $ successful")
                         return false
                     }
-                    return true
                 }
+                return false
+            }else{
+                return true
             }
         }
 
