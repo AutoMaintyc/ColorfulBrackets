@@ -24,27 +24,40 @@ object BracketFinder {
         val unmatchedClosings = mutableListOf<PsiElement>()
         file.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
-                super.visitElement(element)
-                if (element is PsiLiteralValue) {
-                    // 如果是字面量
+
+                //子节点非空
+                if(element.children.isNotEmpty()){
                     return
                 }
+                //跳过注释||是否处于注释中
+                if (element is PsiComment || element.parent is PsiComment){
+                    return
+                }
+                //字面量||是否处于字面量中
+                if (element is PsiLiteralValue || element.parent is PsiLiteralValue|| element.parent.parent is PsiLiteralValue) {
+                    return
+                }
+                if (PsiTreeUtil.findChildOfType(element, PsiElement::class.java) != null)
+                {
+                    return
+                }
+                if (PsiTreeUtil.findChildOfType(element, PsiLiteralValue::class.java) != null){
+                    return
+                }
+
+                super.visitElement(element)
                 when (element.text) {
                     "{" -> {
-                        if (!isInStringOrComment(element)) {
-                            stack.push(element)
-                        }
+                        stack.push(element)
                     }
 
                     "}" -> {
-                        if (!isInStringOrComment(element)) {
-                            if (stack.isNotEmpty()) {
-                                val openingBracket = stack.pop()
-                                pairs.add(openingBracket to element)
-                            } else {
-                                unmatchedClosings.add(element)
-                                println("Unmatched closing bracket at ${element.textRange}")
-                            }
+                        if (stack.isNotEmpty()) {
+                            val openingBracket = stack.pop()
+                            pairs.add(openingBracket to element)
+                        } else {
+                            unmatchedClosings.add(element)
+                            println("Unmatched closing bracket at ${element.textRange}")
                         }
                     }
                 }
@@ -110,47 +123,5 @@ object BracketFinder {
         val green = Random.nextInt(256)
         val blue = Random.nextInt(256)
         return JBColor(Color(red, green, blue), Color(red, green, blue))
-    }
-
-    //    fun isInStringOrComment(element: PsiElement): Boolean {
-//        return PsiTreeUtil.getParentOfType(element, PsiComment::class.java, true) != null ||
-//                PsiTreeUtil.getParentOfType(element, PsiWhiteSpace::class.java, true) != null
-//    }
-    //返回false的时候就  加入
-    //true，不会继续的,不加入颜色修改列表
-    fun isInStringOrComment(element: PsiElement): Boolean {
-        // 检查 element 是否在注释中
-        if (PsiTreeUtil.getParentOfType(element, PsiComment::class.java) != null) return true
-        if (element is PsiLiteralValue && element.value is String) return true
-        // 检查 element 是否在字符串字面量或模板中
-        val parent = PsiTreeUtil.getParentOfType(element, PsiLiteralValue::class.java)
-        if (parent != null) {
-            val value = parent.value
-            if (value is String) {
-                // 检查 element 是否在字符串字面量中
-                val textRange = element.textRange
-                val parentRange = parent.textRange
-                if (textRange.startOffset > parentRange.startOffset + 1 && textRange.endOffset < parentRange.endOffset - 1) {
-                    // 检查 element 是否在字符串模板中
-                    val text = parent.text
-                    val start = textRange.startOffset - parentRange.startOffset - 1
-                    val end = textRange.endOffset - parentRange.startOffset - 1
-                    if (text.substring(start, end).contains("\${") || text.substring(start, end).contains("}")) {
-                        println("check {} in $ successful")
-                        return true
-                    }
-                }
-                //是字符串，返回true,
-                return true
-            }
-            else
-            {
-                //不是字符串，返回false
-                return false
-            }
-        }
-
-        // 如果 element 不在注释或字符串中，返回 false
-        return false
     }
 }

@@ -7,20 +7,20 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiTreeChangeListener
 
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
-        val updater = project.service<BracketUpdater>()
-        updater.register()
-        val connection = project.messageBus.connect()
-        connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, project.service<FileOpenListener>())
-        ApplicationManager.getApplication().invokeLater {
-            val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@invokeLater
-            val document = editor.document
-            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return@invokeLater
-            println("projectStart:::::")
-            BracketFinder.findBrackets( psiFile, editor)
-        }
+        //文档修改之后触发
+        val pluginDocumentListener = project.service<PluginDocumentListener>()
+        pluginDocumentListener.register()
+        //文件打开触发
+        val pluginFileEditorManagerListener = project.service<PluginFileEditorManagerListener>()
+        pluginFileEditorManagerListener.register()
+        //Psi发生变化
+        val pluginPsiTreeChangeListener = project.service<PluginPsiTreeChangeListener>()
+        pluginPsiTreeChangeListener.register()
     }
 }

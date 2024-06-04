@@ -9,8 +9,9 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
 
+//文档修改
 @Service(Service.Level.PROJECT)
-class BracketUpdater(private val project: Project) : DocumentListener {
+class PluginDocumentListener(private val project: Project) : DocumentListener {
 
     override fun documentChanged(event: DocumentEvent) {
         ApplicationManager.getApplication().invokeLater {

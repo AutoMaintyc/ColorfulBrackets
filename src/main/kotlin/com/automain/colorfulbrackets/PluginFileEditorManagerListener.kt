@@ -6,13 +6,15 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.psi.PsiManager
 
 //文件打开，选择的文件变化
 @Service(Service.Level.PROJECT)
-class FileOpenListener(private val project: Project) : FileEditorManagerListener {
+class PluginFileEditorManagerListener(private val project: Project) : FileEditorManagerListener {
 
     override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
         val fileEditor = source.getSelectedEditor(file) as? TextEditor ?: return
@@ -31,5 +33,10 @@ class FileOpenListener(private val project: Project) : FileEditorManagerListener
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
 
         BracketFinder.findBrackets( psiFile, editor)
+    }
+
+    fun register() {
+        val connection = project.messageBus.connect()
+        connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, project.service<PluginFileEditorManagerListener>())
     }
 }
