@@ -29,20 +29,18 @@ object BracketFinder {
         file.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 //跳过注释||是否处于注释中
-                if (element is PsiComment || element.parent is PsiComment)
-                {
+                if (element is PsiComment || element.parent is PsiComment) {
                     return
                 }
                 //字面量||是否处于字面量中
-                if (element is PsiLiteralValue || element.parent is PsiLiteralValue|| element.parent.parent is PsiLiteralValue) 
-                {
+                if (element is PsiLiteralValue || element.parent is PsiLiteralValue || element.parent.parent is PsiLiteralValue) {
                     return
                 }
-                println(element.text +"----------"+element.node.psi::class.simpleName)
+                println(element.text + "----------" + element.node.psi::class.simpleName)
                 if (needRet(element)) return
 
                 super.visitElement(element)
-                 when (element.text) {
+                when (element.text) {
                     "{" -> {
                         stack.push(element)
                     }
@@ -71,11 +69,12 @@ object BracketFinder {
         val markupModel = editor.markupModel
         val document = editor.document
 
-        if (isNeedClean){
-            isNeedClean = true
+        if (isNeedClean) {
             for (highlighter in highlighters) {
                 markupModel.removeHighlighter(highlighter)
             }
+        } else {
+            isNeedClean = true
         }
 
         //markupModel.removeAllHighlighters()
@@ -127,22 +126,22 @@ object BracketFinder {
     }
 
     private fun getRandomColor(): JBColor {
-        val red = Random.nextInt(50,256)
-        val green = Random.nextInt(50,256)
-        val blue = Random.nextInt(50,256)
+        val red = Random.nextInt(50, 256)
+        val green = Random.nextInt(50, 256)
+        val blue = Random.nextInt(50, 256)
         return JBColor(Color(red, green, blue), Color(red, green, blue))
     }
-    
-    private fun needRet(element: PsiElement): Boolean{
+
+    private fun needRet(element: PsiElement): Boolean {
         return (element::class.simpleName == "KtStringTemplateExpression"
-                ||element::class.simpleName == "KtLiteralStringTemplateEntry"
-                ||element::class.simpleName == "KtBlockStringTemplateEntry"
-                ||((element is LeafPsiElement) && element.elementType::class.simpleName == "KtToken")
+                || element::class.simpleName == "KtLiteralStringTemplateEntry"
+                || element::class.simpleName == "KtBlockStringTemplateEntry"
+                || ((element is LeafPsiElement) && element.elementType::class.simpleName == "KtToken")
                 )
     }
 
     //设置为 需要跳过 清除高亮 ,即不需要清除高亮
-    fun setJumpNeedClean(){
+    fun setJumpNeedClean() {
         isNeedClean = false
     }
 
