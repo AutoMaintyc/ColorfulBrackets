@@ -49,15 +49,15 @@ class PluginPsiTreeChangeListener(private val project: Project) : PsiTreeChangeL
     }
 
     override fun childAdded(event: PsiTreeChangeEvent) {
-        val psiFile = event.file as PsiFile
-        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
-        BracketFinder.findBrackets( psiFile, editor)
+//        val psiFile = event.file as PsiFile
+//        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+//        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childRemoved(event: PsiTreeChangeEvent) {
-        val psiFile = event.file as PsiFile
-        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
-        BracketFinder.findBrackets( psiFile, editor)
+//        val psiFile = event.file as PsiFile
+//        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+//        BracketFinder.findBrackets( psiFile, editor)
     }
 
     override fun childReplaced(event: PsiTreeChangeEvent) {
@@ -79,9 +79,13 @@ class PluginPsiTreeChangeListener(private val project: Project) : PsiTreeChangeL
     }
 
     override fun propertyChanged(event: PsiTreeChangeEvent) {
-//        val psiFile = event.file as PsiFile
-//        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
-//        BracketFinder.findBrackets( psiFile, editor)
+        if(event.file == null) return
+        if (!project.isInitialized) return
+        if (FileEditorManager.getInstance(project).selectedTextEditor == null) return
+        if (FileEditorManager.getInstance(project).selectedTextEditor !is Editor) return
+        val psiFile = event.file as PsiFile
+        val editor = FileEditorManager.getInstance(project).selectedTextEditor as Editor
+        BracketFinder.findBrackets( psiFile, editor)
     }
 
     fun register() {
