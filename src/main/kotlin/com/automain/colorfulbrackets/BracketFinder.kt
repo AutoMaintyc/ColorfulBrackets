@@ -38,7 +38,7 @@ object BracketFinder {
                 {
                     return
                 }
-                
+                println(element.text +"----------"+element.node.psi::class.simpleName)
                 if (needRet(element)) return
 
                 super.visitElement(element)
@@ -70,6 +70,16 @@ object BracketFinder {
 
         val markupModel = editor.markupModel
         val document = editor.document
+
+        if (isNeedClean){
+            isNeedClean = true
+            for (highlighter in highlighters) {
+                markupModel.removeHighlighter(highlighter)
+            }
+        }
+
+        //markupModel.removeAllHighlighters()
+
         pairs.forEach { (open, close) ->
             val color = getRandomColor()
             highlightBracket(markupModel, open, color, document)
@@ -98,25 +108,28 @@ object BracketFinder {
         }
     }
 
+    private val highlighters = mutableListOf<RangeHighlighter>()
+
     private fun highlightBracket(markupModel: MarkupModel, element: PsiElement, color: Color, document: Document) {
         val textAttributes = TextAttributes()
 
         textAttributes.foregroundColor = color
         if (element.startOffset >= 0 && element.endOffset <= document.textLength) {
-            markupModel.addRangeHighlighter(
+            val highlighter = markupModel.addRangeHighlighter(
                 element.textRange.startOffset,
                 element.textRange.endOffset,
                 HighlighterLayer.ADDITIONAL_SYNTAX,
                 textAttributes,
                 HighlighterTargetArea.EXACT_RANGE
             )
+            highlighters.add(highlighter)
         }
     }
 
     private fun getRandomColor(): JBColor {
-        val red = Random.nextInt(256)
-        val green = Random.nextInt(256)
-        val blue = Random.nextInt(256)
+        val red = Random.nextInt(50,256)
+        val green = Random.nextInt(50,256)
+        val blue = Random.nextInt(50,256)
         return JBColor(Color(red, green, blue), Color(red, green, blue))
     }
     
@@ -127,4 +140,11 @@ object BracketFinder {
                 ||((element is LeafPsiElement) && element.elementType::class.simpleName == "KtToken")
                 )
     }
+
+    //设置为 需要跳过 清除高亮 ,即不需要清除高亮
+    fun setJumpNeedClean(){
+        isNeedClean = false
+    }
+
+    private var isNeedClean: Boolean = false
 }

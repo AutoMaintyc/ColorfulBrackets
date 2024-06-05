@@ -30,7 +30,7 @@ class PluginFileEditorManagerListener(private val project: Project) : FileEditor
         val editor: Editor = fileEditor.editor
         val document = editor.document 
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
-
+        BracketFinder.setJumpNeedClean()
         BracketFinder.findBrackets( psiFile, editor)
     }
 
