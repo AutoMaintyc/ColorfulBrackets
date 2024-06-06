@@ -5,6 +5,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.psi.PsiDocumentManager
+import com.intellij.util.application
 
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {
@@ -19,9 +20,11 @@ class PluginStartupActivity : ProjectActivity {
         val pluginPsiTreeChangeListener = project.service<PluginPsiTreeChangeListener>()
         pluginPsiTreeChangeListener.register()
         //启动后直接执行一次
-        val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return
-        val document = editor.document
-        val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
-        BracketFinder.findBrackets(psiFile, editor)
+        application.invokeLater {
+            val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@invokeLater
+            val document = editor.document
+            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return@invokeLater
+            BracketFinder.findBrackets(psiFile, editor)
+        }
     }
 }
