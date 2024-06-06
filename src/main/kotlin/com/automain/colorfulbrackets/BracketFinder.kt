@@ -17,7 +17,6 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 object BracketFinder {
 
     fun findBrackets(file: PsiFile, editor: Editor) {
-
         val stack = Stack<PsiElement>()
         stack.clear()
         val pairs = mutableListOf<Pair<PsiElement, PsiElement>>()
@@ -74,6 +73,7 @@ object BracketFinder {
                 markupModel.removeHighlighter(highlighter)
             }
         } else {
+            highlighters.clear()
             isNeedClean = true
         }
 
