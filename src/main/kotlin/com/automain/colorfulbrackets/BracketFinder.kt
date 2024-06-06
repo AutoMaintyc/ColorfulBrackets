@@ -35,7 +35,7 @@ object BracketFinder {
                 if (element is PsiLiteralValue || element.parent is PsiLiteralValue || element.parent.parent is PsiLiteralValue) {
                     return
                 }
-                println(element.text + "----------" + element.node.psi::class.simpleName)
+                //println(element.text + "----------" + element.node.psi::class.simpleName)
                 if (needRet(element)) return
 
                 super.visitElement(element)
@@ -93,7 +93,7 @@ object BracketFinder {
                 it,
                 JBColor(Color.RED, Color.RED),
                 document
-            ) // You can choose a specific color for unmatched brackets
+            )
         }
 
         // Highlight unmatched closing brackets
@@ -103,7 +103,7 @@ object BracketFinder {
                 it,
                 JBColor(Color.RED, Color.RED),
                 document
-            ) // You can choose a specific color for unmatched brackets
+            )
         }
     }
 
