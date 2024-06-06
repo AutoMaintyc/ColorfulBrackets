@@ -6,7 +6,7 @@
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>ColorfulBrackets</name>
-    <version>1.0</version>
+    <version>0.1</version>
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="automaintyc@gmail.com" url="https://github.com/AutoMaintyc/ColorfulBrackets">AutoMain</vendor>
 
@@ -36,7 +36,6 @@
     import com.intellij.openapi.editor.Document
     import com.intellij.openapi.project.Project
     import com.intellij.psi.PsiDocumentManagerListener
-
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
