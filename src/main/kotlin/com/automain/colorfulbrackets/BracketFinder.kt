@@ -83,7 +83,7 @@ object BracketFinder {
             val color = getRandomColor()
             highlightBracket(markupModel, open, color, document)
             highlightBracket(markupModel, close, color, document)
-            println("Found bracket pair: (${open.textRange}, ${close.textRange})")
+            //println("Found bracket pair: (${open.textRange}, ${close.textRange})")
         }
 
         // Highlight unmatched opening brackets
