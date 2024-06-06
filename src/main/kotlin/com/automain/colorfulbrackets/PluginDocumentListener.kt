@@ -14,13 +14,13 @@ import com.intellij.psi.PsiDocumentManager
 class PluginDocumentListener(private val project: Project) : DocumentListener {
 
     override fun documentChanged(event: DocumentEvent) {
-        ApplicationManager.getApplication().invokeLater {
-            val document: Document = event.document
-            val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@invokeLater
-            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return@invokeLater
-            //println("documentChanged::::: ${event.document}")
-            BracketFinder.findBrackets( psiFile, editor)
-        }
+//        ApplicationManager.getApplication().invokeLater {
+//            val document: Document = event.document
+//            val editor = FileEditorManager.getInstance(project).selectedTextEditor ?: return@invokeLater
+//            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return@invokeLater
+//            //println("documentChanged::::: ${event.document}")
+//            BracketFinder.findBrackets( psiFile, editor)
+//        }
     }
 
     fun register() {
