@@ -13,3 +13,6 @@ In programming. Literal meaning - ColorfulBrackets.
 <font color=AB8C83><></font>、
 <font color=C5Ab89>[]</font>
 <br />
+
+## 注：
+目前仅支持，Jetbrains的2023.1及以上版本
