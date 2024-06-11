@@ -1,4 +1,4 @@
-﻿package com.automain.colorfulbrackets
+﻿package com.automain.colorfulbrackets.Listener
 
 //import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
