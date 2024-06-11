@@ -1,8 +1,9 @@
 ﻿package com.automain.colorfulbrackets
 
-import com.automain.colorfulbrackets.Listener.PluginDocumentListener
-import com.automain.colorfulbrackets.Listener.PluginFileEditorManagerListener
-import com.automain.colorfulbrackets.Listener.PluginPsiTreeChangeListener
+import com.automain.colorfulbrackets.listener.*
+//import com.automain.colorfulbrackets.listener.PluginDocumentListener
+//import com.automain.colorfulbrackets.listener.PluginFileEditorManagerListener
+//import com.automain.colorfulbrackets.listener.PluginPsiTreeChangeListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager

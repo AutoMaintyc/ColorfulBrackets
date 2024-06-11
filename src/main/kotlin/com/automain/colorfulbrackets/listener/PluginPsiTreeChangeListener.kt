@@ -1,4 +1,4 @@
-﻿package com.automain.colorfulbrackets.Listener
+﻿package com.automain.colorfulbrackets.listener
 
 //import com.intellij.openapi.Disposable
 import com.automain.colorfulbrackets.BracketFinder

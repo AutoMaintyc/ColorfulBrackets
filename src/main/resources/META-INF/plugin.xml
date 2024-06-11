@@ -33,14 +33,16 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
-    import com.intellij.openapi.editor.Document
-    import com.intellij.openapi.project.Project
-    import com.intellij.psi.PsiDocumentManagerListener
-
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
+        <projectConfigurable
+                parentId="tools"
+                instance="com.automain.colorfulbrackets.config.ProjectSettingsConfigurable"
+                id="com.automain.colorfulbrackets.ProjectSettingsConfigurable"
+                displayName="AMToolBoxSetting"
+                nonDefaultProject="true"/>
     </extensions>
 
     <actions>

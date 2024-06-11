@@ -1,4 +1,4 @@
-﻿package com.automain.colorfulbrackets.Listener
+﻿package com.automain.colorfulbrackets.listener
 
 import com.automain.colorfulbrackets.BracketFinder
 import com.intellij.openapi.fileEditor.FileEditorManager

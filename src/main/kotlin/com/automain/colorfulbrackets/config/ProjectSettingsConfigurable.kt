@@ -1,0 +1,24 @@
+﻿package com.automain.colorfulbrackets.config
+
+import com.intellij.openapi.options.Configurable
+import javax.swing.JComponent
+
+class ProjectSettingsConfigurable : Configurable {
+    var projectSettingsConfigurableUI : ProjectSettingsConfigurableUI? = null
+
+    override fun createComponent(): JComponent? {
+        projectSettingsConfigurableUI = ProjectSettingsConfigurableUI()
+        return projectSettingsConfigurableUI?.panel
+    }
+
+    override fun isModified(): Boolean {
+        return false
+    }
+
+    override fun apply() {
+    }
+
+    override fun getDisplayName(): String {
+        return "AMToolBoxSetting"
+    }
+}
