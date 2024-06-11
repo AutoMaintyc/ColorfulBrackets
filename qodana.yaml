@@ -18,9 +18,9 @@ profile:
 #    paths:
 #      - <path/where/not/run/inspection>
 
-projectJDK: 22 #(Applied in CI/CD pipeline)
+projectJDK: "17" #(Applied in CI/CD pipeline)
 
-#Execute shell command before Qodana execution (Applied in CI/CD pipeline)
+#Execute sh Command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
