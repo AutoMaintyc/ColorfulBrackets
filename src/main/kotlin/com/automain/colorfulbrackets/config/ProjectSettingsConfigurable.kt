@@ -4,7 +4,7 @@ import com.intellij.openapi.options.Configurable
 import javax.swing.JComponent
 
 class ProjectSettingsConfigurable : Configurable {
-    var projectSettingsConfigurableUI : ProjectSettingsConfigurableUI? = null
+    private var projectSettingsConfigurableUI : ProjectSettingsConfigurableUI? = null
 
     override fun createComponent(): JComponent? {
         projectSettingsConfigurableUI = ProjectSettingsConfigurableUI()
