@@ -38,10 +38,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
         <projectConfigurable
-                parentId="tools"
+                parentId="appearance"
                 instance="com.automain.colorfulbrackets.config.ProjectSettingsConfigurable"
                 id="com.automain.colorfulbrackets.ProjectSettingsConfigurable"
-                displayName="AMToolBoxSetting"
+                displayName="ColorfulBracketsSetting"
                 nonDefaultProject="true"/>
     </extensions>
 
