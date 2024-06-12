@@ -1,5 +1,6 @@
 ﻿package com.automain.colorfulbrackets.config
 
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.observable.util.addComponent
 import com.intellij.ui.components.*
 import java.awt.Component
@@ -14,10 +15,10 @@ class ProjectSettingsConfigurableUI {
 
     init {
         // 添加一些选项到列表中
-        listModel.addElement(Pair(""" { } """,true))
-        listModel.addElement(Pair(""" [ ] """,true))
-        listModel.addElement(Pair(""" < > """,true))
-        listModel.addElement(Pair(""" ( ) """,true))
+        listModel.addElement(Pair("{}",PropertiesComponent.getInstance().getBoolean("{}")))
+        listModel.addElement(Pair("[]",PropertiesComponent.getInstance().getBoolean("<>")))
+        listModel.addElement(Pair("<>",PropertiesComponent.getInstance().getBoolean("[]")))
+        listModel.addElement(Pair("()",PropertiesComponent.getInstance().getBoolean("()")))
 
         // 设置列表的渲染器为 JCheckBox
         selectList.cellRenderer = object : DefaultListCellRenderer() {
@@ -31,11 +32,13 @@ class ProjectSettingsConfigurableUI {
 
         // 添加一个鼠标点击事件监听器
         selectList.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                val index = selectList.locationToIndex(e.point)
+            override fun mouseClicked(event: MouseEvent) {
+                val index = selectList.locationToIndex(event.point)
                 val item = selectList.model.getElementAt(index) as Pair<String, Boolean>
                 // 更新选中状态
                 listModel.setElementAt(Pair(item.first, !item.second), index)
+                PropertiesComponent.getInstance().setValue(item.first, !item.second)
+                selectList.repaint()
             }
         })
 

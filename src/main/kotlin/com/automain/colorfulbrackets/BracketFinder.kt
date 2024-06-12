@@ -1,5 +1,6 @@
 ﻿package com.automain.colorfulbrackets
 
+import com.intellij.ide.util.PropertiesComponent
 import kotlin.random.Random
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
@@ -32,17 +33,23 @@ object BracketFinder {
             isNeedClean = true
         }
 
-        var pairs = findElement(file, "{", "}")
-        highlightBrackets(pairs)
-
-        pairs = findElement(file, "<", ">")
-        highlightBrackets(pairs)
-
-        pairs = findElement(file, "[", "]")
-        highlightBrackets(pairs)
-
-        pairs = findElement(file, "(", ")")
-        highlightBrackets(pairs)
+        var pairs: MutableList<Pair<PsiElement, PsiElement>>
+        if (PropertiesComponent.getInstance().getBoolean("{}")) {
+            pairs = findElement(file, "{", "}")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("<>")) {
+            pairs = findElement(file, "<", ">")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("[]")) {
+            pairs = findElement(file, "[", "]")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("()")) {
+            pairs = findElement(file, "(", ")")
+            highlightBrackets(pairs)
+        }
     }
 
     //设置为 需要跳过 清除高亮 ,即不需要清除高亮
