@@ -39,7 +39,7 @@ class ProjectSettingsConfigurableUI {
             }
         })
 
-        // 设置列表的选择模式为单选
+        // 设置列表的选择模式
         selectList.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
 
         // 将列表和详情面板添加到分割面板中
