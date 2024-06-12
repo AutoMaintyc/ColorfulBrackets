@@ -18,9 +18,14 @@ import java.awt.Color
 object BracketFinder {
 
     fun findBrackets(file: PsiFile, editor: Editor) {
+        currentFile = file
+        currentEditor = editor
+        markupModel = currentEditor.markupModel
+        document = currentEditor.document
+        find()
+    }
 
-        markupModel = editor.markupModel
-        document = editor.document
+    fun find(){
 
         //清理掉原来的highlighters
         //markupModel.removeAllHighlighters()
@@ -35,19 +40,19 @@ object BracketFinder {
 
         var pairs: MutableList<Pair<PsiElement, PsiElement>>
         if (PropertiesComponent.getInstance().getBoolean("{}")) {
-            pairs = findElement(file, "{", "}")
+            pairs = findElement( "{", "}")
             highlightBrackets(pairs)
         }
         if (PropertiesComponent.getInstance().getBoolean("<>")) {
-            pairs = findElement(file, "<", ">")
+            pairs = findElement( "<", ">")
             highlightBrackets(pairs)
         }
         if (PropertiesComponent.getInstance().getBoolean("[]")) {
-            pairs = findElement(file, "[", "]")
+            pairs = findElement( "[", "]")
             highlightBrackets(pairs)
         }
         if (PropertiesComponent.getInstance().getBoolean("()")) {
-            pairs = findElement(file, "(", ")")
+            pairs = findElement( "(", ")")
             highlightBrackets(pairs)
         }
     }
@@ -58,7 +63,6 @@ object BracketFinder {
     }
 
     private fun findElement(
-        file: PsiFile,
         leftElement: String,
         rightElement: String
     ): MutableList<Pair<PsiElement, PsiElement>> {
@@ -68,7 +72,7 @@ object BracketFinder {
         val unmatchedClosings = mutableListOf<PsiElement>()
         val unmatchedOpenings = mutableListOf<PsiElement>()
 
-        file.accept(object : PsiRecursiveElementWalkingVisitor() {
+        currentFile.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 //跳过注释||是否处于注释中
                 if (element is PsiComment || element.parent is PsiComment) {
@@ -178,4 +182,6 @@ object BracketFinder {
     private val highlighters = mutableListOf<RangeHighlighter>()
     private lateinit var markupModel: MarkupModel
     private lateinit var document: Document
+    private lateinit var currentFile: PsiFile
+    private lateinit var currentEditor: Editor
 }

@@ -12,13 +12,14 @@ class ProjectSettingsConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        return false
+        return projectSettingsConfigurableUI!!.isModifiedValue
     }
 
     override fun apply() {
+
     }
 
     override fun getDisplayName(): String {
-        return "AMToolBoxSetting"
+        return "ColorfulBracketsSetting"
     }
 }

@@ -1,5 +1,6 @@
 ﻿package com.automain.colorfulbrackets.config
 
+import com.automain.colorfulbrackets.BracketFinder
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.observable.util.addComponent
 import com.intellij.ui.components.*
@@ -12,6 +13,7 @@ class ProjectSettingsConfigurableUI {
     val panel: JPanel = JPanel()
     val listModel: DefaultListModel<Pair<String, Boolean>> = DefaultListModel()
     private val selectList: JList<Pair<String, Boolean>> = JBList(listModel)
+    var isModifiedValue : Boolean = false
 
     init {
         // 添加一些选项到列表中
@@ -39,6 +41,8 @@ class ProjectSettingsConfigurableUI {
                 listModel.setElementAt(Pair(item.first, !item.second), index)
                 PropertiesComponent.getInstance().setValue(item.first, !item.second)
                 selectList.repaint()
+                isModifiedValue = true
+                BracketFinder.find()
             }
         })
 
