@@ -1,6 +1,7 @@
 ﻿package com.automain.colorfulbrackets
 
 import com.automain.colorfulbrackets.listener.*
+import com.intellij.ide.util.PropertiesComponent
 //import com.automain.colorfulbrackets.listener.PluginDocumentListener
 //import com.automain.colorfulbrackets.listener.PluginFileEditorManagerListener
 //import com.automain.colorfulbrackets.listener.PluginPsiTreeChangeListener
@@ -14,6 +15,14 @@ import com.intellij.psi.PsiDocumentManager
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
+        //插件初始化逻辑，仅在安装后执行一次
+        if(!PropertiesComponent.getInstance().getBoolean("colorfulbracketsIsInit")){
+            PropertiesComponent.getInstance().setValue("colorfulbracketsIsInit", true)
+            PropertiesComponent.getInstance().setValue("{}",true)
+            PropertiesComponent.getInstance().setValue("[]",true)
+            PropertiesComponent.getInstance().setValue("<>",true)
+            PropertiesComponent.getInstance().setValue("()",true)
+        }
         //文档修改之后触发
         val pluginDocumentListener = project.service<PluginDocumentListener>()
         pluginDocumentListener.register()

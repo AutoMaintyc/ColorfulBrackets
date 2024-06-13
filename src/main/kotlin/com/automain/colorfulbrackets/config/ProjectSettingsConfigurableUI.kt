@@ -18,8 +18,8 @@ class ProjectSettingsConfigurableUI {
     init {
         // 添加一些选项到列表中
         listModel.addElement(Pair("{}",PropertiesComponent.getInstance().getBoolean("{}")))
-        listModel.addElement(Pair("[]",PropertiesComponent.getInstance().getBoolean("<>")))
-        listModel.addElement(Pair("<>",PropertiesComponent.getInstance().getBoolean("[]")))
+        listModel.addElement(Pair("[]",PropertiesComponent.getInstance().getBoolean("[]")))
+        listModel.addElement(Pair("<>",PropertiesComponent.getInstance().getBoolean("<>")))
         listModel.addElement(Pair("()",PropertiesComponent.getInstance().getBoolean("()")))
 
         // 设置列表的渲染器为 JCheckBox
