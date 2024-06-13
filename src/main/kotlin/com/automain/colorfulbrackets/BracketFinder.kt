@@ -1,31 +1,78 @@
 ﻿package com.automain.colorfulbrackets
 
-import com.intellij.openapi.editor.Editor
-import java.util.*
-import com.intellij.openapi.editor.markup.*
-import com.intellij.psi.*
+import com.intellij.ide.util.PropertiesComponent
+import kotlin.random.Random
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
-import com.intellij.ui.JBColor
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.Document
-import java.awt.Color
-import kotlin.random.Random
+import com.intellij.openapi.editor.markup.*
+import com.intellij.psi.*
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiComment
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.ui.JBColor
+import java.util.*
+import java.awt.Color
 
 object BracketFinder {
 
     fun findBrackets(file: PsiFile, editor: Editor) {
+        currentFile = file
+        currentEditor = editor
+        markupModel = currentEditor.markupModel
+        document = currentEditor.document
+        find()
+    }
+
+    fun find(){
+
+        //清理掉原来的highlighters
+        //markupModel.removeAllHighlighters()
+        if (isNeedClean) {
+            for (highlighter in highlighters) {
+                markupModel.removeHighlighter(highlighter)
+            }
+        } else {
+            highlighters.clear()
+            isNeedClean = true
+        }
+
+        var pairs: MutableList<Pair<PsiElement, PsiElement>>
+        if (PropertiesComponent.getInstance().getBoolean("{}")) {
+            pairs = findElement( "{", "}")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("<>")) {
+            pairs = findElement( "<", ">")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("[]")) {
+            pairs = findElement( "[", "]")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("()")) {
+            pairs = findElement( "(", ")")
+            highlightBrackets(pairs)
+        }
+    }
+
+    //设置为 需要跳过 清除高亮 ,即不需要清除高亮
+    fun setJumpNeedClean() {
+        isNeedClean = false
+    }
+
+    private fun findElement(
+        leftElement: String,
+        rightElement: String
+    ): MutableList<Pair<PsiElement, PsiElement>> {
+
         val stack = Stack<PsiElement>()
-        stack.clear()
         val pairs = mutableListOf<Pair<PsiElement, PsiElement>>()
-        pairs.clear()
-        val unmatchedOpenings = mutableListOf<PsiElement>()
-        unmatchedOpenings.clear()
         val unmatchedClosings = mutableListOf<PsiElement>()
-        unmatchedClosings.clear()
-        file.accept(object : PsiRecursiveElementWalkingVisitor() {
+        val unmatchedOpenings = mutableListOf<PsiElement>()
+
+        currentFile.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 //跳过注释||是否处于注释中
                 if (element is PsiComment || element.parent is PsiComment) {
@@ -40,11 +87,11 @@ object BracketFinder {
 
                 super.visitElement(element)
                 when (element.text) {
-                    "{" -> {
+                    leftElement -> {
                         stack.push(element)
                     }
 
-                    "}" -> {
+                    rightElement -> {
                         if (stack.isNotEmpty()) {
                             val openingBracket = stack.pop()
                             pairs.add(openingBracket to element)
@@ -56,7 +103,6 @@ object BracketFinder {
                 }
             }
         })
-
         if (stack.isNotEmpty()) {
             println("Unmatched opening brackets:")
             stack.forEach {
@@ -64,28 +110,6 @@ object BracketFinder {
                 println("Opening bracket at ${it.textRange}")
             }
         }
-
-        val markupModel = editor.markupModel
-        val document = editor.document
-
-        if (isNeedClean) {
-            for (highlighter in highlighters) {
-                markupModel.removeHighlighter(highlighter)
-            }
-        } else {
-            highlighters.clear()
-            isNeedClean = true
-        }
-
-        //markupModel.removeAllHighlighters()
-
-        pairs.forEach { (open, close) ->
-            val color = getRandomColor()
-            highlightBracket(markupModel, open, color, document)
-            highlightBracket(markupModel, close, color, document)
-            //println("Found bracket pair: (${open.textRange}, ${close.textRange})")
-        }
-
         // Highlight unmatched opening brackets
         unmatchedOpenings.forEach {
             highlightBracket(
@@ -105,11 +129,25 @@ object BracketFinder {
                 document
             )
         }
+        return pairs
     }
 
-    private val highlighters = mutableListOf<RangeHighlighter>()
+    private fun highlightBrackets(pairs: MutableList<Pair<PsiElement, PsiElement>>) {
 
-    private fun highlightBracket(markupModel: MarkupModel, element: PsiElement, color: Color, document: Document) {
+        pairs.forEach { (open, close) ->
+            val color = getRandomColor()
+            highlightBracket(markupModel, open, color, document)
+            highlightBracket(markupModel, close, color, document)
+            //println("Found bracket pair: (${open.textRange}, ${close.textRange})")
+        }
+    }
+
+    private fun highlightBracket(
+        markupModel: MarkupModel,
+        element: PsiElement,
+        color: Color,
+        document: Document
+    ) {
         val textAttributes = TextAttributes()
 
         textAttributes.foregroundColor = color
@@ -140,10 +178,10 @@ object BracketFinder {
                 )
     }
 
-    //设置为 需要跳过 清除高亮 ,即不需要清除高亮
-    fun setJumpNeedClean() {
-        isNeedClean = false
-    }
-
     private var isNeedClean: Boolean = false
+    private val highlighters = mutableListOf<RangeHighlighter>()
+    private lateinit var markupModel: MarkupModel
+    private lateinit var document: Document
+    private lateinit var currentFile: PsiFile
+    private lateinit var currentEditor: Editor
 }

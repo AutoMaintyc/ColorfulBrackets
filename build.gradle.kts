@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.AutoMain"
-version = "0.1-SNAPSHOT"
+version = "0.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,8 +14,8 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.2.6")
-    type.set("IC") // Target IDE Platform
+    version.set("2023.1.1")
+    type.set("RD") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
 }
@@ -31,7 +31,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("232")
+        sinceBuild.set("231")
         untilBuild.set("241.*")
     }
 

@@ -1,5 +1,6 @@
-﻿package com.automain.colorfulbrackets
+﻿package com.automain.colorfulbrackets.listener
 
+import com.automain.colorfulbrackets.BracketFinder
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
@@ -21,7 +22,7 @@ class PluginFileEditorManagerListener(private val project: Project) : FileEditor
         val document = editor.document
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
         BracketFinder.setJumpNeedClean()
-        BracketFinder.findBrackets( psiFile, editor)
+        BracketFinder.findBrackets(psiFile, editor)
     }
 
     override fun selectionChanged(event: FileEditorManagerEvent) {
@@ -31,7 +32,7 @@ class PluginFileEditorManagerListener(private val project: Project) : FileEditor
         val document = editor.document 
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
         BracketFinder.setJumpNeedClean()
-        BracketFinder.findBrackets( psiFile, editor)
+        BracketFinder.findBrackets(psiFile, editor)
     }
 
     fun register() {
