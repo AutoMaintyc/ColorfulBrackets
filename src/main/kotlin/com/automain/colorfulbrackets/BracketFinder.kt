@@ -97,17 +97,17 @@ object BracketFinder {
                             pairs.add(openingBracket to element)
                         } else {
                             unmatchedClosings.add(element)
-                            println("Unmatched closing bracket at ${element.textRange}")
+                            //println("Unmatched closing bracket at ${element.textRange}")
                         }
                     }
                 }
             }
         })
         if (stack.isNotEmpty()) {
-            println("Unmatched opening brackets:")
+            //println("Unmatched opening brackets:")
             stack.forEach {
                 unmatchedOpenings.add(it)
-                println("Opening bracket at ${it.textRange}")
+                //println("Opening bracket at ${it.textRange}")
             }
         }
         // Highlight unmatched opening brackets
