@@ -1,5 +1,7 @@
-﻿package com.automain.colorfulbrackets
+﻿package com.automain.colorfulbrackets.action
 
+import com.automain.colorfulbrackets.BracketFinder
+import com.intellij.codeInsight.highlighting.HighlightManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiDocumentManager

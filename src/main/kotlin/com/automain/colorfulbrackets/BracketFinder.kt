@@ -1,19 +1,17 @@
 ﻿package com.automain.colorfulbrackets
 
 import com.intellij.ide.util.PropertiesComponent
-import kotlin.random.Random
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
-import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.Document
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.*
 import com.intellij.psi.*
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiComment
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.refactoring.suggested.endOffset
+import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.JBColor
-import java.util.*
 import java.awt.Color
+import java.util.*
+import kotlin.random.Random
 
 object BracketFinder {
 
@@ -86,19 +84,16 @@ object BracketFinder {
                 if (needRet(element)) return
 
                 super.visitElement(element)
-                when (element.text) {
-                    leftElement -> {
-                        stack.push(element)
+                if (element.text == leftElement){
+                    var r = element.parent.lastChild
+                    var rElement = element.parent.lastChild
+                    while (r.text != rightElement && rElement.prevSibling != null){
+                        rElement = rElement.prevSibling
+                        r = rElement.prevSibling
                     }
 
-                    rightElement -> {
-                        if (stack.isNotEmpty()) {
-                            val openingBracket = stack.pop()
-                            pairs.add(openingBracket to element)
-                        } else {
-                            unmatchedClosings.add(element)
-                            //println("Unmatched closing bracket at ${element.textRange}")
-                        }
+                    if (r != null){
+                        pairs.add(Pair(element, r))
                     }
                 }
             }
