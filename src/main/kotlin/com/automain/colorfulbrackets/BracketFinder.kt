@@ -9,6 +9,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.JBColor
+import org.mozilla.javascript.ast.ParenthesizedExpression
 import java.awt.Color
 import java.util.*
 import kotlin.random.Random
@@ -84,6 +85,13 @@ object BracketFinder {
                 if (needRet(element)) return
 
                 super.visitElement(element)
+                if (element is ParenthesizedExpression){
+                    val parenthesizedExpression = element
+                    val expression = parenthesizedExpression.expression // 表达式内容
+                    //val lParenth = parenthesizedExpression.lastChild // 左括号 PSI 元素
+                    //val rParenth = parenthesizedExpression.rParenth // 右括号 PSI 元素
+
+                }
                 if (element.text == leftElement){
                     var r = element.parent.lastChild
                     var rElement = element.parent.lastChild
