@@ -51,7 +51,7 @@
 
     <actions>
         <action id="com.AutoMain.ColorfulBrackets.actions.FindBracketsAction"
-                class="com.automain.colorfulbrackets.FindBracketsAction"
+                class="com.automain.colorfulbrackets.action.FindBracketsAction"
                 text="Find Brackets"
                 description="Find and display bracket pairs">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
