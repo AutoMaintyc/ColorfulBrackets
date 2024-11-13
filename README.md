@@ -8,3 +8,21 @@ In programming. Literal meaning - ColorfulBrackets.
 
 ## 注：
 目前仅支持，Jetbrains的2023.1及以上版本
+
+## 实现：
+###  一、入口：
+#### PSI：
+PluginPsiTreeChangeListener
+<br>继承自 PsiTreeChangeListener
+#### 主动刷新：
+FindBracketsAction
+<br>在plugin.xml中绑定
+#### 文档变化：
+PluginFileEditorManagerListener
+<br>继承自 FileEditorManagerListener
+### 二、配置界面：
+#### 界面事件：
+ProjectSettingsConfigurable
+<br>继承自 Configurable
+#### 界面：
+ProjectSettingsConfigurableUI

@@ -85,11 +85,10 @@ object BracketFinder {
                 if (needRet(element)) return
 
                 super.visitElement(element)
-                if (element is ParenthesizedExpression){
-                    val parenthesizedExpression = element
-                    val expression = parenthesizedExpression.expression // 表达式内容
-                    //val lParenth = parenthesizedExpression.lastChild // 左括号 PSI 元素
-                    //val rParenth = parenthesizedExpression.rParenth // 右括号 PSI 元素
+                if (element is ParenthesizedExpression) {
+                    val expression = element.expression // 表达式内容
+                    //val lParenth = expression.lastChild // 左括号 PSI 元素
+                    //val rParenth = expression.rParenth // 右括号 PSI 元素
 
                 }
                 if (element.text == leftElement){
