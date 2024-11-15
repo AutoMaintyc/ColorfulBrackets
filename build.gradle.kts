@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    id("idea")
     id("org.jetbrains.kotlin.jvm") version "1.9.23"
     id("org.jetbrains.intellij") version "1.17.3"
 }
@@ -14,10 +14,15 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.1.1")
+    version.set("2024.3")
     type.set("RD") // Target IDE Platform
+    
+    plugins.set(
+        listOf(
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+            "org.jetbrains.plugins.go-template:243.21565.23",
+        )
+    )
 }
 
 tasks {
@@ -32,7 +37,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("231")
-        untilBuild.set("241.*")
+        untilBuild.set("243.*")
     }
 
     signPlugin {

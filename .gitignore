@@ -42,3 +42,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 /java_pid20004.hprof
+/lib/

@@ -25,34 +25,34 @@ object BracketFinder {
     }
 
     fun find(){
-//        //清理掉原来的highlighters
-//        //markupModel.removeAllHighlighters()
-//        if (isNeedClean) {
-//            for (highlighter in highlighters) {
-//                markupModel.removeHighlighter(highlighter)
-//            }
-//        } else {
-//            highlighters.clear()
-//            isNeedClean = true
-//        }
-//
-//        var pairs: MutableList<Pair<PsiElement, PsiElement>>
-//        if (PropertiesComponent.getInstance().getBoolean("{}")) {
-//            pairs = findElement( "{", "}")
-//            highlightBrackets(pairs)
-//        }
-//        if (PropertiesComponent.getInstance().getBoolean("<>")) {
-//            pairs = findElement( "<", ">")
-//            highlightBrackets(pairs)
-//        }
-//        if (PropertiesComponent.getInstance().getBoolean("[]")) {
-//            pairs = findElement( "[", "]")
-//            highlightBrackets(pairs)
-//        }
-//        if (PropertiesComponent.getInstance().getBoolean("()")) {
-//            pairs = findElement( "(", ")")
-//            highlightBrackets(pairs)
-//        }
+        //清理掉原来的highlighters
+        //markupModel.removeAllHighlighters()
+        if (isNeedClean) {
+            for (highlighter in highlighters) {
+                markupModel.removeHighlighter(highlighter)
+            }
+        } else {
+            highlighters.clear()
+            isNeedClean = true
+        }
+
+        var pairs: MutableList<Pair<PsiElement, PsiElement>>
+        if (PropertiesComponent.getInstance().getBoolean("{}")) {
+            pairs = findElement( "{", "}")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("<>")) {
+            pairs = findElement( "<", ">")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("[]")) {
+            pairs = findElement( "[", "]")
+            highlightBrackets(pairs)
+        }
+        if (PropertiesComponent.getInstance().getBoolean("()")) {
+            pairs = findElement( "(", ")")
+            highlightBrackets(pairs)
+        }
     }
 
     //设置为 需要跳过 清除高亮 ,即不需要清除高亮

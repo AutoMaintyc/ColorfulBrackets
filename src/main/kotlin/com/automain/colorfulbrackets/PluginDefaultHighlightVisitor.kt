@@ -2,10 +2,12 @@
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.lang.BracePair
+import com.intellij.lang.LanguageBraceMatching
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.jetbrains.rider.languages.fileTypes.csharp.assists.CSharpBraceMatcher
 
 class PluginDefaultHighlightVisitor : HighlightVisitor {
 
@@ -20,11 +22,18 @@ class PluginDefaultHighlightVisitor : HighlightVisitor {
         holder: HighlightInfoHolder,
         action: Runnable
     ): Boolean {
+
         /*在这里进行高亮操作*/
         println("analyze")
         action.run()
+        val vee = CSharpBraceMatcher()
+        for(i in vee.pairs) {
+            BracePair(i.leftBraceType,i.rightBraceType,true)
+        }
+
         return true
     }
+
 
     override fun clone(): HighlightVisitor {
         println("clone")
@@ -36,8 +45,14 @@ class PluginDefaultHighlightVisitor : HighlightVisitor {
         println("Visiting: " + element.text)
         println("visit")
         val type = (element as? LeafPsiElement)?.elementType ?: return
-        if (element is PsiErrorElement) {
+        val leftBraceType = element as LeafPsiElement
+        if (leftBraceType != null) {
+
+            LanguageBraceMatching.INSTANCE.forLanguage(element.language).pairs
             println(type)
         }
     }
+
+    /*队尾Add，队头AddFirst*/
+    val arrayDeque = ArrayDeque<PsiElement>()
 }
