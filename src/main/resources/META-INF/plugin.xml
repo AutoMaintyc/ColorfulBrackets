@@ -37,10 +37,17 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
+    <extensionPoints>
+        <extensionPoint name="bracketType" beanClass="com.intellij.lang.LanguageExtensionPoint" dynamic="true">
+            <with attribute="implementationClass"
+                  implements="com.automain.colorfulbrackets.type.BracketType"/>
+        </extensionPoint>
+    </extensionPoints>
+
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <highlightVisitor implementation="com.automain.colorfulbrackets.PluginDefaultHighlightVisitor"/>
+        <highlightVisitor implementation="com.automain.colorfulbrackets.visitor.PluginHighlightVisitorDefault"/>
         <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
         <projectConfigurable
                 parentId="appearance"
