@@ -2,12 +2,10 @@
 
 import com.automain.colorfulbrackets.type.BracketType
 import com.intellij.codeInsight.highlighting.BraceMatchingUtil
-import com.intellij.lang.Language
-import com.intellij.lang.LanguageBraceMatching
-import com.intellij.lang.LanguageExtension
-import com.intellij.lang.PairedBraceMatcher
+import com.intellij.lang.*
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.psi.util.elementType
 import com.intellij.ui.JBColor
 import java.awt.Color
 import kotlin.random.Random
@@ -15,13 +13,11 @@ import kotlin.random.Random
 object BracketHelper {
     private val bracketType = LanguageExtension<BracketType>("com.AutoMain.ColorfulBrackets.bracketType")
 
-    fun needCheck(element: PsiElement): Boolean {
-        if (isRightBracket(element)) return false
-        return element is LeafPsiElement
-    }
+    /** 所有语言的所有括号的type,key是语言的str */
+    private val bracketTypeMap = mutableMapOf<String, MutableList<BracePair>>()
 
-    fun findRightBracket(element: PsiElement): PsiElement {
-        /*根据给定元素向右查找符合type的element*/
+    /** 所有语言的elementType整理成 map<语言Str，List<elementType>>的结构。存到bracketTypeMap中 */
+    fun initBracketTypeMap() {
         val languages = Language.getRegisteredLanguages()
         for (language in languages) {
             val pairs = LanguageBraceMatching.INSTANCE.forLanguage(language)?.pairs.let {
@@ -45,14 +41,54 @@ object BracketHelper {
                     it
                 }
             } ?: pairs?.toList()
+
+            if (pairsList != null) {
+                val bracePairs = mutableListOf<BracePair>()
+                for (pairs in pairsList){
+                    bracePairs.add(pairs)
+                }
+                bracketTypeMap[language.displayName] = bracePairs
+            }
+
             println(pairsList)
         }
-
-        return element.parent
     }
 
-    private fun isRightBracket(element: PsiElement): Boolean {
-        return false
+    /** @return 是否叶子节点 */
+    fun needCheck(element: PsiElement): Boolean {
+        return element is LeafPsiElement
+    }
+
+    /** @return （null，传入的 不是括号、右括号） */
+    fun findRightBracket(element: PsiElement): PsiElement? {
+        /*根据给定元素向右查找符合type的element*/
+        val bracketType = isLeftBracket(element) ?: return null
+        if (!bracketType) return null
+        if (bracketType) {
+            return getRightBracket(element.nextSibling)
+        }
+        return null
+    }
+
+    /** 递归，在当前层次（深度、高度），向右查找 */
+    private fun getRightBracket(element: PsiElement): PsiElement? {
+        if (needCheck(element)){
+            if (isLeftBracket(element.nextSibling) == false) {
+                return element.nextSibling
+            }
+        }
+        getRightBracket(element.nextSibling)
+        return null
+    }
+
+    /** @return （null, 不是括号）（==true, 左括号）（==false，右括号） */
+    private fun isLeftBracket(element: PsiElement): Boolean? {
+        for (pair in bracketTypeMap[element.language.displayName]!!) {
+            if (element.elementType == pair.leftBraceType){
+                return true
+            }
+        }
+        return null
     }
 
     fun getRandomColor(): JBColor {

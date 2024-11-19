@@ -1,6 +1,8 @@
 ﻿package com.automain.colorfulbrackets.visitor
 
 import com.automain.colorfulbrackets.BracketHelper
+import com.intellij.codeInsight.daemon.impl.HighlightInfo
+import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.ide.util.PropertiesComponent
@@ -35,12 +37,19 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
     override fun visit(element: PsiElement) {
         /*在这里找到需要高亮的*/
         if (!BracketHelper.needCheck(element)) return
-        var rightBracket = BracketHelper.findRightBracket(element)
-        SetHightlight(element)
-        SetHightlight(rightBracket)
+        val rightBracket: PsiElement? = BracketHelper.findRightBracket(element)
+        if (rightBracket != null){
+            setHighlight(element)
+            setHighlight(rightBracket)
+        }
     }
 
-    protected fun SetHightlight(element: PsiElement){
+    private fun setHighlight(element: PsiElement){
         /*设置高亮信息*/
+        val builder = HighlightInfo.newHighlightInfo(HighlightInfoType.TODO)
+        builder.range(element)
+        val highlightInfo: HighlightInfo? = builder.create()
+
+        highlightInfoHolder?.add(highlightInfo)
     }
 }

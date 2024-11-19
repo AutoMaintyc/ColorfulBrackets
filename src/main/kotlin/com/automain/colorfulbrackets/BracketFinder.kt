@@ -21,7 +21,7 @@ object BracketFinder {
         currentEditor = editor
         markupModel = currentEditor.markupModel
         document = currentEditor.document
-        find()
+        //find()
     }
 
     fun find(){

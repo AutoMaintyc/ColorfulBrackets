@@ -1,10 +1,12 @@
 ﻿package com.automain.colorfulbrackets
 
-import com.automain.colorfulbrackets.listener.*
-import com.intellij.ide.util.PropertiesComponent
 //import com.automain.colorfulbrackets.listener.PluginDocumentListener
 //import com.automain.colorfulbrackets.listener.PluginFileEditorManagerListener
 //import com.automain.colorfulbrackets.listener.PluginPsiTreeChangeListener
+import com.automain.colorfulbrackets.listener.PluginDocumentListener
+import com.automain.colorfulbrackets.listener.PluginFileEditorManagerListener
+import com.automain.colorfulbrackets.listener.PluginPsiTreeChangeListener
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -15,6 +17,7 @@ import com.intellij.psi.PsiDocumentManager
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
+        BracketHelper.initBracketTypeMap()
         //插件初始化逻辑，仅在安装后执行一次
         if(!PropertiesComponent.getInstance().getBoolean("colorfulbracketsIsInit")){
             PropertiesComponent.getInstance().setValue("colorfulbracketsIsInit", true)
