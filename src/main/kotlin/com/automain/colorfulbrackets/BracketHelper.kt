@@ -44,7 +44,7 @@ object BracketHelper {
 
             if (pairsList != null) {
                 val bracePairs = mutableListOf<BracePair>()
-                for (pairs in pairsList){
+                for (pairs in pairsList) {
                     bracePairs.add(pairs)
                 }
                 bracketTypeMap[language.displayName] = bracePairs
