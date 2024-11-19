@@ -39,6 +39,7 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
         if (!BracketHelper.needCheck(element)) return
         val rightBracket: PsiElement? = BracketHelper.findRightBracket(element)
         if (rightBracket != null){
+
             setHighlight(element)
             setHighlight(rightBracket)
         }

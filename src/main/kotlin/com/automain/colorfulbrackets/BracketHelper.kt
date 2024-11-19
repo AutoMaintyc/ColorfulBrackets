@@ -62,30 +62,34 @@ object BracketHelper {
     /** @return （null，传入的 不是括号、右括号） */
     fun findRightBracket(element: PsiElement): PsiElement? {
         /*根据给定元素向右查找符合type的element*/
-        val bracketType = isLeftBracket(element) ?: return null
-        if (!bracketType) return null
-        if (bracketType) {
-            return getRightBracket(element.nextSibling)
+        val bracketType = isLeftBracket(element)
+        return when (bracketType) {
+            true -> getRightBracket(element)
+            false -> null
+            null -> null
         }
-        return null
     }
 
-    /** 递归，在当前层次（深度、高度），向右查找 */
+    /** While，在当前层次（深度、高度），向右查找 */
     private fun getRightBracket(element: PsiElement): PsiElement? {
-        if (needCheck(element)){
-            if (isLeftBracket(element.nextSibling) == false) {
-                return element.nextSibling
+        var current = element
+        while (current != null) {
+            if (needCheck(current)) {
+                if (isLeftBracket(current) == false) {
+                    return current
+                }
             }
+            current = current.nextSibling
         }
-        getRightBracket(element.nextSibling)
         return null
     }
 
     /** @return （null, 不是括号）（==true, 左括号）（==false，右括号） */
     private fun isLeftBracket(element: PsiElement): Boolean? {
         for (pair in bracketTypeMap[element.language.displayName]!!) {
-            if (element.elementType == pair.leftBraceType){
-                return true
+            when (element.elementType) {
+                pair.leftBraceType -> return true
+                pair.rightBraceType -> return false
             }
         }
         return null
