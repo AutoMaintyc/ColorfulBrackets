@@ -21,11 +21,10 @@ object BracketFinder {
         currentEditor = editor
         markupModel = currentEditor.markupModel
         document = currentEditor.document
-        find()
+        //find()
     }
 
     fun find(){
-
         //清理掉原来的highlighters
         //markupModel.removeAllHighlighters()
         if (isNeedClean) {

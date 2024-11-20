@@ -21,7 +21,7 @@
     <br>Note: The project is still in development. If you have any ideas or find bugs, please provide feedback on <a href="https://github.com/AutoMaintyc/ColorfulBrackets/issues">GitHub</a>
     <br>
     <br>修改代码中“{”、“}”、“[”、“]”、“<”、“>”、“(”、“)”的颜色。
-    <br>在每一次代码发生变化时颜色都会随之发生变化，且颜色完全随机
+    <br>在每一次代码发生变化时颜色都会发生变化，且颜色完全随机
     <br>可以在 设置 -> 外观与行为 -> ColorfulBracketsSetting 中关闭指定的 括号对 的颜色
     <br><a href="https://github.com/AutoMaintyc/ColorfulBrackets">源代码</a>
     <br>注：当前仍处于开发阶段，有创意点或bug请在<a href="https://github.com/AutoMaintyc/ColorfulBrackets/issues">GitHub</a>上反馈
@@ -37,9 +37,17 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
+    <extensionPoints>
+        <extensionPoint name="bracketType" beanClass="com.intellij.lang.LanguageExtensionPoint" dynamic="true">
+            <with attribute="implementationClass"
+                  implements="com.automain.colorfulbrackets.type.BracketType"/>
+        </extensionPoint>
+    </extensionPoints>
+
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <highlightVisitor implementation="com.automain.colorfulbrackets.visitor.PluginHighlightVisitorDefault"/>
         <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
         <projectConfigurable
                 parentId="appearance"
