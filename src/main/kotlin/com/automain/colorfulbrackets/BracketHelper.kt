@@ -70,8 +70,6 @@ object BracketHelper {
                 }
                 bracketTypeMap[language.displayName] = bracePairs
             }
-
-            println(pairsList)
         }
     }
 
