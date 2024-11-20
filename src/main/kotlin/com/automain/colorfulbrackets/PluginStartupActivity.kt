@@ -17,7 +17,7 @@ import com.intellij.psi.PsiDocumentManager
 //项目启动时执行
 class PluginStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
-        BracketHelper.initBracketTypeMap()
+        BracketHelper.initBracketHelper()
         //插件初始化逻辑，仅在安装后执行一次
         if(!PropertiesComponent.getInstance().getBoolean("colorfulbracketsIsInit")){
             PropertiesComponent.getInstance().setValue("colorfulbracketsIsInit", true)
