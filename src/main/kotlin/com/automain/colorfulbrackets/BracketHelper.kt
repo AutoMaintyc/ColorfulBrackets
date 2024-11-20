@@ -3,6 +3,8 @@
 import com.automain.colorfulbrackets.type.BracketType
 import com.intellij.codeInsight.highlighting.BraceMatchingUtil
 import com.intellij.lang.*
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.elementType
@@ -107,4 +109,8 @@ object BracketHelper {
         return JBColor(Color(red, green, blue), Color(red, green, blue))
     }
 
+}
+
+object ColorHelper{
+    val COLORFUL_BRACKETS_KEYWORD : TextAttributesKey = TextAttributesKey.createTextAttributesKey("MY_KEYWORD", DefaultLanguageHighlighterColors.CONSTANT);
 }
