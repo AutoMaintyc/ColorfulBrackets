@@ -11,6 +11,8 @@ import java.awt.Color
 import kotlin.random.Random
 
 object BracketHelper {
+
+    /** 不同语言的括号的拓展点 */
     private val bracketType = LanguageExtension<BracketType>("com.AutoMain.ColorfulBrackets.bracketType")
 
     /** 所有语言的所有括号的type,key是语言的str */
@@ -104,4 +106,5 @@ object BracketHelper {
         val blue = Random.nextInt(50, 256)
         return JBColor(Color(red, green, blue), Color(red, green, blue))
     }
+
 }

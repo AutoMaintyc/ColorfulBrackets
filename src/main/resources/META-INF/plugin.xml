@@ -28,11 +28,11 @@
     <br>
     <br><a href="https://github.com/AutoMaintyc"><em>Made by AutoMain</em></a>
     ]]></description>
-    
+
     <change-notes><![CDATA[
         A more complete unstable version.
     ]]></change-notes>
-    
+
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
