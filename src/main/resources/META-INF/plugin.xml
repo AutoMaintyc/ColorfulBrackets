@@ -55,6 +55,7 @@
                 id="com.automain.colorfulbrackets.ProjectSettingsConfigurable"
                 displayName="ColorfulBracketsSetting"
                 nonDefaultProject="true"/>
+        <additionalTextAttributes scheme="Default" file="colorSchemes/colorful.xml"/>
     </extensions>
 
     <actions>

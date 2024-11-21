@@ -1,6 +1,7 @@
 ﻿package com.automain.colorfulbrackets.visitor
 
 import com.automain.colorfulbrackets.BracketHelper
+import com.automain.colorfulbrackets.ColorHelper
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor

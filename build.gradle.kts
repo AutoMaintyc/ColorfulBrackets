@@ -16,7 +16,7 @@ repositories {
 intellij {
     version.set("2024.3")
     type.set("RD") // Target IDE Platform
-    
+
     plugins.set(
         listOf(
 

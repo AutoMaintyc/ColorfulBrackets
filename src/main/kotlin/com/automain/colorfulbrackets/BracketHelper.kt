@@ -1,8 +1,11 @@
 ﻿package com.automain.colorfulbrackets
 
 import com.automain.colorfulbrackets.type.BracketType
+import com.intellij.codeInsight.daemon.impl.HighlightInfo
+import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.highlighting.BraceMatchingUtil
 import com.intellij.lang.*
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
@@ -103,6 +106,9 @@ object BracketHelper {
     }
 
     fun getColor(): JBColor {
+        val type = HighlightInfoType.HighlightInfoTypeImpl(HighlightSeverity.INFORMATION, DefaultLanguageHighlighterColors.CONSTANT)
+        HighlightInfo.newHighlightInfo(type)
+
         val red = Random.nextInt(50, 256)
         val green = Random.nextInt(50, 256)
         val blue = Random.nextInt(50, 256)
@@ -112,5 +118,6 @@ object BracketHelper {
 }
 
 object ColorHelper{
-    val COLORFUL_BRACKETS_KEYWORD : TextAttributesKey = TextAttributesKey.createTextAttributesKey("MY_KEYWORD", DefaultLanguageHighlighterColors.CONSTANT);
+    val COLORFUL_BRACKETS_KEYWORD : TextAttributesKey = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD", DefaultLanguageHighlighterColors.CONSTANT);
+
 }
