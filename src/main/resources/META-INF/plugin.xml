@@ -55,7 +55,9 @@
                 id="com.automain.colorfulbrackets.ProjectSettingsConfigurable"
                 displayName="ColorfulBracketsSetting"
                 nonDefaultProject="true"/>
+        <!--suppress PluginXmlValidity -->
         <additionalTextAttributes scheme="Default" file="colorSchemes/colorful.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colorSchemes/colorfulDarcula.xml"/>
     </extensions>
 
     <actions>

@@ -11,9 +11,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.elementType
-import com.intellij.ui.JBColor
-import java.awt.Color
-import kotlin.random.Random
 
 object BracketHelper {
 
@@ -108,14 +105,16 @@ object BracketHelper {
 }
 
 object ColorHelper {
-    private val COLORFUL_BRACKETS_KEYWORD: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
+    private val pluginHighlightInfo: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
         HighlightSeverity.INFORMATION,
-        DefaultLanguageHighlighterColors.BRACKETS
+        DefaultLanguageHighlighterColors.CONSTANT
     )
+    private val textAttributesKey = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD")
 
     fun getHighlightInfo(element: PsiElement): HighlightInfo? {
-        val key = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD",DefaultLanguageHighlighterColors.BRACKETS)
-        val highlightInfo = HighlightInfo.newHighlightInfo(COLORFUL_BRACKETS_KEYWORD).textAttributes(key).range(element).create()
+        val highlightInfo =
+            HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(textAttributesKey).range(element)
+                .create()
         return highlightInfo
     }
 }

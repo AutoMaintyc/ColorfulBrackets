@@ -2,14 +2,11 @@
 
 import com.automain.colorfulbrackets.BracketHelper
 import com.automain.colorfulbrackets.ColorHelper
-import com.intellij.codeInsight.daemon.impl.HighlightInfo
-import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import java.awt.Color
 
 class PluginHighlightVisitorDefault : HighlightVisitor {
     private var highlightInfoHolder: HighlightInfoHolder? = null
