@@ -9,6 +9,7 @@ import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import java.awt.Color
 
 class PluginHighlightVisitorDefault : HighlightVisitor {
     private var highlightInfoHolder: HighlightInfoHolder? = null
@@ -47,10 +48,7 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
 
     private fun setHighlight(element: PsiElement){
         /*设置高亮信息*/
-        val builder = HighlightInfo.newHighlightInfo(HighlightInfoType.TODO)
-        builder.range(element)
-        val highlightInfo: HighlightInfo? = builder.create()
-
+        val highlightInfo = ColorHelper.getHighlightInfo(element)
         highlightInfoHolder?.add(highlightInfo)
     }
 }

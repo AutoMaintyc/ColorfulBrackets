@@ -105,19 +105,17 @@ object BracketHelper {
         return null
     }
 
-    fun getColor(): JBColor {
-        val type = HighlightInfoType.HighlightInfoTypeImpl(HighlightSeverity.INFORMATION, DefaultLanguageHighlighterColors.CONSTANT)
-        HighlightInfo.newHighlightInfo(type)
-
-        val red = Random.nextInt(50, 256)
-        val green = Random.nextInt(50, 256)
-        val blue = Random.nextInt(50, 256)
-        return JBColor(Color(red, green, blue), Color(red, green, blue))
-    }
-
 }
 
-object ColorHelper{
-    val COLORFUL_BRACKETS_KEYWORD : TextAttributesKey = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD", DefaultLanguageHighlighterColors.CONSTANT);
+object ColorHelper {
+    private val COLORFUL_BRACKETS_KEYWORD: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
+        HighlightSeverity.INFORMATION,
+        DefaultLanguageHighlighterColors.BRACKETS
+    )
 
+    fun getHighlightInfo(element: PsiElement): HighlightInfo? {
+        val key = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD",DefaultLanguageHighlighterColors.BRACKETS)
+        val highlightInfo = HighlightInfo.newHighlightInfo(COLORFUL_BRACKETS_KEYWORD).textAttributes(key).range(element).create()
+        return highlightInfo
+    }
 }

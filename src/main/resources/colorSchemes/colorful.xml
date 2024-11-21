@@ -2,14 +2,7 @@
 <list>
     <option name="COLORFUL_BRACKETS_KEYWORD">
         <value>
-            <option name="FOREGROUND" value="660000"/>
-        </value>
-    </option>
-    <option name="COLORFUL_BRACKETS_KEYWORD">
-        <value>
-            <option name="FOREGROUND" value="008000"/>
-            <option name="BACKGROUND" value="e3fcff"/>
-            <option name="FONT_TYPE" value="1"/>
+            <option name="FOREGROUND" value="000066"/>
         </value>
     </option>
 </list>
