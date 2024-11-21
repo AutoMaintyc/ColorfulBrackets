@@ -21,7 +21,7 @@ object BracketHelper {
     private val bracketTypeMap = mutableMapOf<String, MutableList<BracePair>>()
 
     /** 初始化 */
-    fun initBracketHelper(){
+    fun initBracketHelper() {
         initBracketTypeMap()
     }
 
@@ -79,7 +79,7 @@ object BracketHelper {
 
     /** While，在当前层次（深度、高度），向右查找 */
     private fun getRightBracket(element: PsiElement): PsiElement? {
-        var current : PsiElement? = element
+        var current: PsiElement? = element
         while (current != null) {
             if (needCheck(current)) {
                 if (isLeftBracket(current) == false) {
