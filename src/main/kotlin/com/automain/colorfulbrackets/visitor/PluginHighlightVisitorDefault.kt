@@ -4,7 +4,6 @@ import com.automain.colorfulbrackets.BracketHelper
 import com.automain.colorfulbrackets.ColorHelper
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
-import com.intellij.ide.util.PropertiesComponent
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
@@ -12,7 +11,7 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
     private var highlightInfoHolder: HighlightInfoHolder? = null
 
     override fun suitableForFile(file: PsiFile): Boolean {
-        return PropertiesComponent.getInstance().getBoolean("{}")
+        return BracketHelper.pluginIsOpen()
     }
 
     override fun analyze(

@@ -4,6 +4,7 @@ import com.automain.colorfulbrackets.type.BracketType
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.highlighting.BraceMatchingUtil
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.lang.*
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
@@ -99,6 +100,25 @@ object BracketHelper {
             false -> null
             null -> null
         }
+    }
+
+    fun pluginIsOpen(): Boolean {
+        return (PropertiesComponent.getInstance().getBoolean("<>") ||
+                PropertiesComponent.getInstance().getBoolean("[]") ||
+                PropertiesComponent.getInstance().getBoolean("()") ||
+                PropertiesComponent.getInstance().getBoolean("{}"))
+    }
+
+    /** 获取PSI元素在PSI树的深度 */
+    @Suppress("unused")
+    fun getElementDepth(element: PsiElement): Int {
+        var depth = 0
+        var current = element
+        while (current.parent != null) {
+            depth++
+            current = current.parent
+        }
+        return depth
     }
 }
 
