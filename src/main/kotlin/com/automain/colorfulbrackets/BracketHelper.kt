@@ -105,11 +105,13 @@ object BracketHelper {
 }
 
 object ColorHelper {
+    /** 随机颜色时，池子的大小 */
     private const val COLOR_COUNT = 16
     private val pluginHighlightInfo: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
         HighlightSeverity.INFORMATION,
         DefaultLanguageHighlighterColors.CONSTANT
     )
+    /** 随机颜色时用的TextAttributesKey的池子 */
     private val textAttributesKeyList by lazy {
         val list = mutableListOf<TextAttributesKey>()
         for (i in 1..COLOR_COUNT) {
@@ -119,11 +121,9 @@ object ColorHelper {
         }
         return@lazy list
     }
-
+    /** 获取高亮信息 */
     fun getHighlightInfo(element: PsiElement): HighlightInfo? {
         val color = textAttributesKeyList.shuffled().take(1)[0]
-        val highlightInfo =
-            HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(color).range(element).create()
-        return highlightInfo
+        return HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(color).range(element).create()
     }
 }
