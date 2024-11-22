@@ -13,33 +13,11 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.elementType
 
 object BracketHelper {
-
     /** 不同语言的括号的拓展点 */
     private val bracketType = LanguageExtension<BracketType>("com.AutoMain.ColorfulBrackets.bracketType")
 
     /** 所有语言的所有括号的type,key是语言的str */
     private val bracketTypeMap = mutableMapOf<String, MutableList<BracePair>>()
-
-    /** 初始化 */
-    fun initBracketHelper() {
-        initBracketTypeMap()
-    }
-
-    /** @return 是否叶子节点 */
-    fun needCheck(element: PsiElement): Boolean {
-        return element is LeafPsiElement
-    }
-
-    /** @return （null，传入的 不是括号、右括号） */
-    fun findRightBracket(element: PsiElement): PsiElement? {
-        /*根据给定元素向右查找符合type的element*/
-        val bracketType = isLeftBracket(element)
-        return when (bracketType) {
-            true -> getRightBracket(element)
-            false -> null
-            null -> null
-        }
-    }
 
     /** 所有语言的elementType整理成 map<语言Str，List<elementType>>的结构。存到bracketTypeMap中 */
     private fun initBracketTypeMap() {
@@ -102,6 +80,26 @@ object BracketHelper {
         return null
     }
 
+    /** 初始化 */
+    fun initBracketHelper() {
+        initBracketTypeMap()
+    }
+
+    /** @return 是否叶子节点 */
+    fun needCheck(element: PsiElement): Boolean {
+        return element is LeafPsiElement
+    }
+
+    /** @return （null，传入的 不是括号、右括号） */
+    fun findRightBracket(element: PsiElement): PsiElement? {
+        /*根据给定元素向右查找符合type的element*/
+        val bracketType = isLeftBracket(element)
+        return when (bracketType) {
+            true -> getRightBracket(element)
+            false -> null
+            null -> null
+        }
+    }
 }
 
 object ColorHelper {
