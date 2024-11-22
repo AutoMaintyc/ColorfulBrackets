@@ -105,16 +105,25 @@ object BracketHelper {
 }
 
 object ColorHelper {
+    private const val COLOR_COUNT = 32
     private val pluginHighlightInfo: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
         HighlightSeverity.INFORMATION,
         DefaultLanguageHighlighterColors.CONSTANT
     )
-    private val textAttributesKey = TextAttributesKey.createTextAttributesKey("COLORFUL_BRACKETS_KEYWORD")
+    private val textAttributesKeyList by lazy {
+        val list = mutableListOf<TextAttributesKey>()
+        for (i in 1..COLOR_COUNT) {
+            val keyStr = "COLORFUL_BRACKETS_KEYWORD$i"
+            val key = TextAttributesKey.createTextAttributesKey(keyStr)
+            list.add(key)
+        }
+        return@lazy list
+    }
 
     fun getHighlightInfo(element: PsiElement): HighlightInfo? {
+        val color = textAttributesKeyList.shuffled().take(1)[0]
         val highlightInfo =
-            HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(textAttributesKey).range(element)
-                .create()
+            HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(color).range(element).create()
         return highlightInfo
     }
 }
