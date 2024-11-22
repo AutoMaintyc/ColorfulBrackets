@@ -105,7 +105,7 @@ object BracketHelper {
 }
 
 object ColorHelper {
-    private const val COLOR_COUNT = 32
+    private const val COLOR_COUNT = 16
     private val pluginHighlightInfo: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
         HighlightSeverity.INFORMATION,
         DefaultLanguageHighlighterColors.CONSTANT

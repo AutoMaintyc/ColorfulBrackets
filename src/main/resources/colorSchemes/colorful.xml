@@ -1,6 +1,81 @@
 <?xml version='1.0'?>
 <list>
-    <option name="COLORFUL_BRACKETS_KEYWORD">
+    <option name="COLORFUL_BRACKETS_KEYWORD1">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD2">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD3">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD4">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD5">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD6">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD7">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD8">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD9">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD10">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD11">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD12">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD13">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD14">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD15">
+        <value>
+            <option name="FOREGROUND" value="00FF00"/>
+        </value>
+    </option>
+    <option name="COLORFUL_BRACKETS_KEYWORD16">
         <value>
             <option name="FOREGROUND" value="00FF00"/>
         </value>
