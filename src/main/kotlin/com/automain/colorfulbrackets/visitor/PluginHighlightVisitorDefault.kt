@@ -43,6 +43,7 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
         }
     }
 
+    /** 设置高亮信息 */
     private fun setHighlight(element: PsiElement){
         /*设置高亮信息*/
         val highlightInfo = ColorHelper.getHighlightInfo(element)
