@@ -103,10 +103,10 @@ object BracketHelper {
     }
 
     fun pluginIsOpen(): Boolean {
-        return (PropertiesComponent.getInstance().getBoolean("<>") ||
-                PropertiesComponent.getInstance().getBoolean("[]") ||
-                PropertiesComponent.getInstance().getBoolean("()") ||
-                PropertiesComponent.getInstance().getBoolean("{}"))
+        return (PluginSetting.getBracketSetting("{}") ||
+                PluginSetting.getBracketSetting("[]") ||
+                PluginSetting.getBracketSetting("()") ||
+                PluginSetting.getBracketSetting("{}"))
     }
 
     /** 获取PSI元素在PSI树的深度 */
@@ -147,5 +147,25 @@ object ColorHelper {
     fun getHighlightInfo(element: PsiElement): HighlightInfo? {
         val color = textAttributesKeyList.shuffled().take(1)[0]
         return HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(color).range(element).create()
+    }
+}
+
+object PluginSetting {
+    private val BracketsSetting = mutableMapOf(
+        "{}" to true,
+        "<>" to true,
+        "[]" to true,
+        "()" to true
+    )
+
+    fun setBracketSetting(key: String, value: Boolean) {
+        if (BracketsSetting.containsKey(key)) {
+            PropertiesComponent.getInstance().setValue(key, value)
+            BracketsSetting[key] = value
+        }
+    }
+
+    fun getBracketSetting(key: String): Boolean {
+        return BracketsSetting[key] ?: false
     }
 }
