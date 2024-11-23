@@ -21,10 +21,10 @@ class PluginStartupActivity : ProjectActivity {
         //插件初始化逻辑，仅在安装后执行一次
         if(!PropertiesComponent.getInstance().getBoolean("colorfulbracketsIsInit")){
             PropertiesComponent.getInstance().setValue("colorfulbracketsIsInit", true)
-            PropertiesComponent.getInstance().setValue("{}",true)
-            PropertiesComponent.getInstance().setValue("[]",true)
-            PropertiesComponent.getInstance().setValue("<>",true)
-            PropertiesComponent.getInstance().setValue("()",true)
+            PluginSetting.setBracketSetting("{}",true)
+            PluginSetting.setBracketSetting("[]",true)
+            PluginSetting.setBracketSetting("<>",true)
+            PluginSetting.setBracketSetting("()",true)
         }
         //文档修改之后触发
         val pluginDocumentListener = project.service<PluginDocumentListener>()
