@@ -2,6 +2,7 @@
 
 import com.automain.colorfulbrackets.BracketHelper
 import com.automain.colorfulbrackets.ColorHelper
+import com.automain.colorfulbrackets.PluginSetting
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.psi.PsiElement
@@ -36,9 +37,12 @@ class PluginHighlightVisitorDefault : HighlightVisitor {
         /*在这里找到需要高亮的*/
         if (!BracketHelper.needCheck(element)) return
         val rightBracket: PsiElement? = BracketHelper.findRightBracket(element)
-        if (rightBracket != null){
-            setHighlight(element)
-            setHighlight(rightBracket)
+        if (rightBracket != null) {
+            val bracketKey = element.text + rightBracket.text
+            if (PluginSetting.getBracketSetting(bracketKey)) {
+                setHighlight(element)
+                setHighlight(rightBracket)
+            }
         }
     }
 

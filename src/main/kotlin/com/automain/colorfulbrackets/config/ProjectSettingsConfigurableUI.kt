@@ -1,6 +1,7 @@
 ﻿package com.automain.colorfulbrackets.config
 
 import com.automain.colorfulbrackets.BracketFinder
+import com.automain.colorfulbrackets.PluginSetting
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.observable.util.addComponent
 import com.intellij.ui.components.*
@@ -39,7 +40,7 @@ class ProjectSettingsConfigurableUI {
                 val item = selectList.model.getElementAt(index) as Pair<String, Boolean>
                 // 更新选中状态
                 listModel.setElementAt(Pair(item.first, !item.second), index)
-                PropertiesComponent.getInstance().setValue(item.first, !item.second)
+                PluginSetting.setBracketSetting(item.first, !item.second)
                 selectList.repaint()
                 isModifiedValue = true
                 BracketFinder.find()

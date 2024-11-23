@@ -151,6 +151,7 @@ object ColorHelper {
 }
 
 object PluginSetting {
+    /** 空间换时间的做法，存成map，以达到最优的读取速度 */
     private val BracketsSetting = mutableMapOf(
         "{}" to true,
         "<>" to true,
@@ -158,6 +159,7 @@ object PluginSetting {
         "()" to true
     )
 
+    /** 设置括号的开关设置，BracketsSetting存一份，PropertiesComponent存一份 */
     fun setBracketSetting(key: String, value: Boolean) {
         if (BracketsSetting.containsKey(key)) {
             PropertiesComponent.getInstance().setValue(key, value)
@@ -165,6 +167,7 @@ object PluginSetting {
         }
     }
 
+    /** 获取括号的开关设置，当传入的key错误时返回false，其他情况返回BracketsSetting存储的状态 */
     fun getBracketSetting(key: String): Boolean {
         return BracketsSetting[key] ?: false
     }
