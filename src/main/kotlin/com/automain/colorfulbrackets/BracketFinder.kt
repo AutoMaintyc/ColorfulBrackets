@@ -21,7 +21,7 @@ object BracketFinder {
         currentEditor = editor
         markupModel = currentEditor.markupModel
         document = currentEditor.document
-        //find()
+        find()
     }
 
     fun find(){
@@ -72,6 +72,7 @@ object BracketFinder {
 
         currentFile.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
+                if(element !is LeafPsiElement) return
                 //跳过注释||是否处于注释中
                 if (element is PsiComment || element.parent is PsiComment) {
                     return
@@ -82,25 +83,12 @@ object BracketFinder {
                 }
                 //println(element.text + "----------" + element.node.psi::class.simpleName)
                 if (needRet(element)) return
+                //判断当前元素状态正常：非Error
 
+                //开始遍历元素
                 super.visitElement(element)
-                if (element is ParenthesizedExpression) {
-                    val expression = element.expression // 表达式内容
-                    //val lParenth = expression.lastChild // 左括号 PSI 元素
-                    //val rParenth = expression.rParenth // 右括号 PSI 元素
-
-                }
-                if (element.text == leftElement){
-                    var r = element.parent.lastChild
-                    var rElement = element.parent.lastChild
-                    while (r.text != rightElement && rElement.prevSibling != null){
-                        rElement = rElement.prevSibling
-                        r = rElement.prevSibling
-                    }
-
-                    if (r != null){
-                        pairs.add(Pair(element, r))
-                    }
+                if (element.text == leftElement ||element.text == rightElement){
+                    //双端队列存储
                 }
             }
         })
