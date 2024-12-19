@@ -73,6 +73,7 @@ object BracketFinder {
         currentFile.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 if(element !is LeafPsiElement) return
+
                 //跳过注释||是否处于注释中
                 if (element is PsiComment || element.parent is PsiComment) {
                     return
