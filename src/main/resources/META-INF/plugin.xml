@@ -47,8 +47,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <highlightVisitor implementation="com.automain.colorfulbrackets.visitor.PluginHighlightVisitorDefault"/>
-        <postStartupActivity implementation="com.automain.colorfulbrackets.PluginStartupActivity"/>
+        <postStartupActivity implementation="com.automain.colorfulbrackets.ColorfulBracketsStartupActivity"/>
         <projectConfigurable
                 parentId="appearance"
                 instance="com.automain.colorfulbrackets.config.ProjectSettingsConfigurable"
@@ -61,11 +60,5 @@
     </extensions>
 
     <actions>
-        <action id="com.AutoMain.ColorfulBrackets.actions.FindBracketsAction"
-                class="com.automain.colorfulbrackets.action.FindBracketsAction"
-                text="Find Brackets"
-                description="Find and display bracket pairs">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
     </actions>
 </idea-plugin>

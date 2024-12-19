@@ -1,13 +1,9 @@
 ﻿package com.automain.colorfulbrackets
 
 import com.automain.colorfulbrackets.type.BracketType
-import com.intellij.codeInsight.daemon.impl.HighlightInfo
-import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.highlighting.BraceMatchingUtil
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.lang.*
-import com.intellij.lang.annotation.HighlightSeverity
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
@@ -16,89 +12,67 @@ import com.intellij.psi.util.elementType
 object BracketHelper {
     /** 不同语言的括号的拓展点 */
     private val bracketType = LanguageExtension<BracketType>("com.AutoMain.ColorfulBrackets.bracketType")
+    private val bracketKeyByText = mapOf(
+        "{" to "{}",
+        "}" to "{}",
+        "[" to "[]",
+        "]" to "[]",
+        "(" to "()",
+        ")" to "()",
+        "<" to "<>",
+        ">" to "<>"
+    )
 
-    /** 所有语言的所有括号的type,key是语言的str */
-    private val bracketTypeMap = mutableMapOf<String, MutableList<BracePair>>()
-
-    /** 所有语言的elementType整理成 map<语言Str，List<elementType>>的结构。存到bracketTypeMap中 */
-    private fun initBracketTypeMap() {
-        val languages = Language.getRegisteredLanguages()
-        for (language in languages) {
-            val pairs = LanguageBraceMatching.INSTANCE.forLanguage(language)?.pairs.let {
-                if (it.isNullOrEmpty()) {
-                    language.associatedFileType
-                        ?.let { fileType ->
-                            BraceMatchingUtil.getBraceMatcher(
-                                fileType,
-                                language
-                            ) as? PairedBraceMatcher
-                        }
-                        ?.pairs
-                } else {
-                    it
+    fun getBracePair(element: PsiElement): BracePair? {
+        val language = element.language
+        
+        // 1. 尝试从 LanguageBraceMatching 获取
+        val pairs = LanguageBraceMatching.INSTANCE.forLanguage(language)?.pairs
+        if (pairs != null) {
+            val type = element.elementType
+            val pair = pairs.find { type == it.leftBraceType || type == it.rightBraceType }
+            if (pair != null) return pair
+        }
+        
+        // 2. 尝试从 FileType 关联的 matcher 获取
+        val fileType = language.associatedFileType ?: element.containingFile?.fileType
+        if (fileType != null) {
+            try {
+                val matcher = BraceMatchingUtil.getBraceMatcher(fileType, language)
+                if (matcher is PairedBraceMatcher) {
+                    val type = element.elementType
+                    val pair = matcher.pairs.find { type == it.leftBraceType || type == it.rightBraceType }
+                    if (pair != null) return pair
                 }
-            }
-            val pairsList = bracketType.forLanguage(language)?.pairs()?.let {
-                if (!pairs.isNullOrEmpty()) {
-                    it.toMutableSet().apply { addAll(pairs) }
-                } else {
-                    it
-                }
-            } ?: pairs?.toList()
-
-            if (pairsList != null) {
-                val bracePairs = mutableListOf<BracePair>()
-                for (value: BracePair in pairsList) {
-                    bracePairs.add(value)
-                }
-                bracketTypeMap[language.displayName] = bracePairs
+            } catch (_: Exception) {
+                // 忽略
             }
         }
-    }
-
-    /** While，在当前层次（深度、高度），向右查找 */
-    private fun getRightBracket(element: PsiElement): PsiElement? {
-        var current: PsiElement? = element
-        while (current != null) {
-            if (needCheck(current)) {
-                if (isLeftBracket(current) == false) {
-                    return current
-                }
+        
+        // 3. 尝试从自定义扩展点获取
+        try {
+            val customPairs = bracketType.forLanguage(language)?.pairs()
+            if (customPairs != null) {
+                val type = element.elementType
+                val pair = customPairs.find { type == it.leftBraceType || type == it.rightBraceType }
+                if (pair != null) return pair
             }
-            current = current.nextSibling
+        } catch (_: Exception) {
+            // 忽略
         }
+
         return null
     }
 
-    /** @return （null, 不是括号）（==true, 左括号）（==false，右括号） */
-    private fun isLeftBracket(element: PsiElement): Boolean? {
-        for (pair in bracketTypeMap[element.language.displayName]!!) {
-            when (element.elementType) {
-                pair.leftBraceType -> return true
-                pair.rightBraceType -> return false
-            }
-        }
-        return null
-    }
+    fun getBracketSettingKey(element: PsiElement): String? {
+        if (element !is LeafPsiElement) return null
 
-    /** 初始化 */
-    fun initBracketHelper() {
-        initBracketTypeMap()
-    }
+        getBracketSettingKeyByText(element)?.let { return it }
 
-    /** @return 是否叶子节点 */
-    fun needCheck(element: PsiElement): Boolean {
-        return element is LeafPsiElement
-    }
-
-    /** @return （null，传入的 不是括号、右括号） */
-    fun findRightBracket(element: PsiElement): PsiElement? {
-        /*根据给定元素向右查找符合type的element*/
-        val bracketType = isLeftBracket(element)
-        return when (bracketType) {
-            true -> getRightBracket(element)
-            false -> null
-            null -> null
+        val pair = getBracePair(element) ?: return null
+        return when (element.elementType) {
+            pair.leftBraceType, pair.rightBraceType -> getBracketSettingKeyByPair(pair)
+            else -> null
         }
     }
 
@@ -106,31 +80,70 @@ object BracketHelper {
         return (PluginSetting.getBracketSetting("{}") ||
                 PluginSetting.getBracketSetting("[]") ||
                 PluginSetting.getBracketSetting("()") ||
-                PluginSetting.getBracketSetting("{}"))
+                PluginSetting.getBracketSetting("<>"))
     }
 
     /** 获取PSI元素在PSI树的深度 */
-    @Suppress("unused")
-    fun getElementDepth(element: PsiElement): Int {
+    fun getBracketDepth(element: PsiElement): Int {
         var depth = 0
-        var current = element
-        while (current.parent != null) {
-            depth++
+        var current: PsiElement? = element.parent
+        while (current != null && current !is com.intellij.psi.PsiFile) {
+            if (isBracketedContainer(current)) {
+                depth++
+            }
             current = current.parent
         }
         return depth
+    }
+
+    private fun getBracketSettingKeyByText(element: PsiElement): String? {
+        return bracketKeyByText[element.text]
+    }
+
+    private fun getBracketSettingKeyByPair(pair: BracePair): String? {
+        return when {
+            pair.leftBraceType.toString().contains("LBRACE", ignoreCase = true) ||
+                    pair.rightBraceType.toString().contains("RBRACE", ignoreCase = true) -> "{}"
+            pair.leftBraceType.toString().contains("LBRACKET", ignoreCase = true) ||
+                    pair.rightBraceType.toString().contains("RBRACKET", ignoreCase = true) -> "[]"
+            pair.leftBraceType.toString().contains("LPAREN", ignoreCase = true) ||
+                    pair.rightBraceType.toString().contains("RPAREN", ignoreCase = true) -> "()"
+            pair.leftBraceType.toString().contains("LT", ignoreCase = true) ||
+                    pair.rightBraceType.toString().contains("GT", ignoreCase = true) -> "<>"
+            else -> null
+        }
+    }
+
+    private fun isBracketedContainer(element: PsiElement): Boolean {
+        if (element is LeafPsiElement) return false
+        
+        val first = getFirstSignificantChild(element) ?: return false
+        val last = getLastSignificantChild(element) ?: return false
+        
+        val pair = getBracePair(first) ?: return false
+        return first.elementType == pair.leftBraceType && last.elementType == pair.rightBraceType
+    }
+
+    private fun getFirstSignificantChild(element: PsiElement): PsiElement? {
+        var child = element.firstChild
+        while (child != null && (child is com.intellij.psi.PsiWhiteSpace || child is com.intellij.psi.PsiComment)) {
+            child = child.nextSibling
+        }
+        return child
+    }
+
+    private fun getLastSignificantChild(element: PsiElement): PsiElement? {
+        var child = element.lastChild
+        while (child != null && (child is com.intellij.psi.PsiWhiteSpace || child is com.intellij.psi.PsiComment)) {
+            child = child.prevSibling
+        }
+        return child
     }
 }
 
 object ColorHelper {
     /** 随机颜色时，池子的大小 */
     private const val COLOR_COUNT = 16
-
-    /** 插件高亮使用的级别和颜色方案 */
-    private val pluginHighlightInfo: HighlightInfoType = HighlightInfoType.HighlightInfoTypeImpl(
-        HighlightSeverity.INFORMATION,
-        DefaultLanguageHighlighterColors.CONSTANT
-    )
 
     /** 随机颜色时用的TextAttributesKey的池子 */
     private val textAttributesKeyList by lazy {
@@ -143,32 +156,38 @@ object ColorHelper {
         return@lazy list
     }
 
-    /** 获取高亮信息 */
-    fun getHighlightInfo(element: PsiElement): HighlightInfo? {
-        val color = textAttributesKeyList.shuffled().take(1)[0]
-        return HighlightInfo.newHighlightInfo(pluginHighlightInfo).textAttributes(color).range(element).create()
+    fun getTextAttributesKey(depth: Int): TextAttributesKey {
+        // 确保深度是非负数
+        val safeDepth = if (depth < 0) 0 else depth
+        val index = safeDepth % COLOR_COUNT
+        return textAttributesKeyList[index]
     }
 }
 
 object PluginSetting {
-    /** 空间换时间的做法，存成map，以达到最优的读取速度 */
-    private val BracketsSetting = mutableMapOf(
-        "{}" to true,
-        "<>" to true,
-        "[]" to true,
-        "()" to true
-    )
+    /** 这里的 map 仅作为缓存，实际值以 PropertiesComponent 为准 */
+    private val BracketsSetting = mutableMapOf<String, Boolean>()
 
-    /** 设置括号的开关设置，BracketsSetting存一份，PropertiesComponent存一份 */
-    fun setBracketSetting(key: String, value: Boolean) {
-        if (BracketsSetting.containsKey(key)) {
-            PropertiesComponent.getInstance().setValue(key, value)
-            BracketsSetting[key] = value
+    /** 获取括号的开关设置 */
+    fun getBracketSetting(key: String): Boolean {
+        val pc = PropertiesComponent.getInstance()
+        // 优先从缓存取
+        BracketsSetting[key]?.let { return it }
+        
+        // 如果不存在则默认为 true
+        if (!pc.isValueSet(key)) {
+            pc.setValue(key, true)
+            BracketsSetting[key] = true
+            return true
         }
+        val value = pc.getBoolean(key, true)
+        BracketsSetting[key] = value
+        return value
     }
 
-    /** 获取括号的开关设置，当传入的key错误时返回false，其他情况返回BracketsSetting存储的状态 */
-    fun getBracketSetting(key: String): Boolean {
-        return BracketsSetting[key] ?: false
+    /** 设置括号的开关设置 */
+    fun setBracketSetting(key: String, value: Boolean) {
+        PropertiesComponent.getInstance().setValue(key, value)
+        BracketsSetting[key] = value
     }
 }

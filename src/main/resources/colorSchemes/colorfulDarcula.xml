@@ -2,17 +2,17 @@
 <list>
     <option name="COLORFUL_BRACKETS_KEYWORD1">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="FF0000"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD2">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="FFA500"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD3">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="FFFF00"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD4">
@@ -22,32 +22,32 @@
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD5">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="00FFFF"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD6">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="0000FF"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD7">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="800080"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD8">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="FFC0CB"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD9">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="A52A2A"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD10">
         <value>
-            <option name="FOREGROUND" value="00FF00"/>
+            <option name="FOREGROUND" value="808080"/>
         </value>
     </option>
     <option name="COLORFUL_BRACKETS_KEYWORD11">
