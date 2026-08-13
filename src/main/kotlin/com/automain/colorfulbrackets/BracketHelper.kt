@@ -120,8 +120,18 @@ object BracketHelper {
         val first = getFirstSignificantChild(element) ?: return false
         val last = getLastSignificantChild(element) ?: return false
         
-        val pair = getBracePair(first) ?: return false
-        return first.elementType == pair.leftBraceType && last.elementType == pair.rightBraceType
+        val pair = getBracePair(first)
+        if (pair != null) {
+            return first.elementType == pair.leftBraceType && last.elementType == pair.rightBraceType
+        }
+
+        // Fallback to text matching for parentheses not covered by LanguageBraceMatching
+        val firstText = first.text
+        val lastText = last.text
+        return (firstText == "(" && lastText == ")") ||
+               (firstText == "{" && lastText == "}") ||
+               (firstText == "[" && lastText == "]") ||
+               (firstText == "<" && lastText == ">")
     }
 
     private fun getFirstSignificantChild(element: PsiElement): PsiElement? {
